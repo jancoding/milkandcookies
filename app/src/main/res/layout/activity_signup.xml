@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SignupActivity">
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="WELCOME!"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etFullName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Full Name"
+        android:layout_below="@+id/tvWelcome"
+        android:layout_marginTop="20dp"
+    />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:layout_below="@+id/etFullName"
+        android:layout_marginTop="10dp"
+    />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:layout_below="@+id/etUsername"
+        android:layout_marginTop="10dp"
+    />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_below="@+id/etEmail"
+        android:layout_marginTop="10dp"
+    />
+
+    <RadioGroup
+        android:id="@+id/rgDietary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPassword"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/rbVegan"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vegan"
+        />
+        <RadioButton android:id="@+id/rbVegetarian"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vegetarian"
+        />
+        <RadioButton android:id="@+id/rbPescetarian"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pescetarian"
+        />
+
+        <RadioButton
+            android:id="@+id/rbNone"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvAllergen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rgDietary"
+        android:layout_marginTop="20dp"
+        android:text="Enter your allergens:"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_below="@id/rgDietary"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
+        android:text="Add"
+    />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllergens"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvAllergen"
+        android:layout_marginTop="10dp"
+    />
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rvAllergens"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Let's get cooking!"
+    />
+</RelativeLayout>
