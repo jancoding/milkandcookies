@@ -8,10 +8,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvIngredients"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="350dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rvIngredients"
+        android:layout_marginTop="10dp"
+        tools:text="Preheat the oven to 370 degrees, then whisk in your eggs, next put in your dry ingredients and slowly combine" />
 
 </RelativeLayout>

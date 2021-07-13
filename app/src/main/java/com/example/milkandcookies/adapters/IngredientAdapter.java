@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.activities.ReplaceActivity;
+import com.parse.ParseObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
-    List<Ingredient> ingredients;
+    JSONArray ingredients;
 
-    public IngredientAdapter(List<Ingredient> ingredients) {
+    public IngredientAdapter(JSONArray ingredients) {
         this.ingredients = ingredients;
 
     }
@@ -40,14 +44,19 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull @NotNull IngredientAdapter.ViewHolder holder, int position) {
         // Grab the item at the position
-        Ingredient item = ingredients.get(position);
+        Ingredient item = null;
+        try {
+            item = (Ingredient) ingredients.get(position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         // Bind the item into the specified viewHolder
         holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size();
+        return ingredients.length();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -62,13 +71,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
-            tvIngredient.setText(item.getFullIngredient());
+            tvIngredient.setText(item.getOriginal());
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(itemView.getContext(), ReplaceActivity.class);
-            intent.putExtra("ingredient", ingredients.get(getAdapterPosition()));
+            try {
+                intent.putExtra("ingredient", (Serializable) ingredients.get(getAdapterPosition()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             itemView.getContext().startActivity(intent);
         }
     }

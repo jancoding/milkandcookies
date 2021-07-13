@@ -11,6 +11,7 @@ import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.fragments.RecipeFragment;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -21,9 +22,9 @@ public class DetailFragmentAdapter extends FragmentPagerAdapter {
     // titles of each tab
     private String tabTitles[];
     private Context context;
-    private ArrayList<Ingredient> ingredients;
+    private JSONArray ingredients;
 
-    public DetailFragmentAdapter(FragmentManager fm, Context context, ArrayList<Ingredient> ingredients) {
+    public DetailFragmentAdapter(FragmentManager fm, Context context, JSONArray ingredients) {
         super(fm);
         this.context = context;
         PAGE_COUNT = 2;

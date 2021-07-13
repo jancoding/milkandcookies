@@ -34,7 +34,7 @@ public class ReplaceActivity extends AppCompatActivity {
 
     public void getReplacements(Ingredient ingredient) {
         AsyncHttpClient client = new AsyncHttpClient();
-        String recipeURL = BASE_URL + "&ingredientName=" + ingredient.getSimpleIngredient();
+        String recipeURL = BASE_URL + "&ingredientName=" + ingredient.getOriginal();
         Log.d("TAG", "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override

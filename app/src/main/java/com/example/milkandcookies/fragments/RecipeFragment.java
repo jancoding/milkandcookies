@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.adapters.IngredientAdapter;
 import com.example.milkandcookies.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -31,19 +34,20 @@ public class RecipeFragment extends Fragment {
     public int page;
     private RecyclerView rvIngredients;
     private IngredientAdapter ingredientAdapter;
-    private ArrayList<Ingredient> ingredients;
+    private TextView tvInstructions;
+    private JSONArray ingredients;
 
     public RecipeFragment() {
         // Required empty public constructor
     }
 
-    public RecipeFragment(int page, ArrayList<Ingredient> ingredients) {
+    public RecipeFragment(int page, JSONArray ingredients) {
         this.page = page;
         this.ingredients = ingredients;
     }
 
     // returns a new instance of the follower class
-    public static RecipeFragment newInstance(int page, ArrayList<Ingredient> ingredients) {
+    public static RecipeFragment newInstance(int page, JSONArray ingredients) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         RecipeFragment fragment = new RecipeFragment(page, ingredients);
@@ -70,9 +74,11 @@ public class RecipeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvIngredients = view.findViewById(R.id.rvIngredients);
         ingredientAdapter = new IngredientAdapter(ingredients);
+        tvInstructions = view.findViewById(R.id.tvInstructions);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ingredients = (ArrayList<Ingredient>) getArguments().get("ingredients");
+        ingredients = (JSONArray) getArguments().get("ingredients");
+
 
         setUpPage(view);
     }
