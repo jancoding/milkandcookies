@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.fragments.RecipeFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,9 +21,9 @@ public class DetailFragmentAdapter extends FragmentPagerAdapter {
     // titles of each tab
     private String tabTitles[];
     private Context context;
-    private ArrayList<String> ingredients;
+    private ArrayList<Ingredient> ingredients;
 
-    public DetailFragmentAdapter(FragmentManager fm, Context context, ArrayList<String> ingredients) {
+    public DetailFragmentAdapter(FragmentManager fm, Context context, ArrayList<Ingredient> ingredients) {
         super(fm);
         this.context = context;
         PAGE_COUNT = 2;

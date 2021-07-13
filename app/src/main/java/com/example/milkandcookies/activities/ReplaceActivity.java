@@ -1,0 +1,61 @@
+package com.example.milkandcookies.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.milkandcookies.Ingredient;
+import com.example.milkandcookies.R;
+
+import okhttp3.Headers;
+
+public class ReplaceActivity extends AppCompatActivity {
+
+    private RadioGroup rgOptions;
+    private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+    private Ingredient ingredient;
+    private final String TAG = "ReplaceActivity";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_replace);
+        ingredient = (Ingredient) getIntent().getSerializableExtra("ingredient");
+        getReplacements(ingredient);
+    }
+
+
+    public void getReplacements(Ingredient ingredient) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        String recipeURL = BASE_URL + "&ingredientName=" + ingredient.getSimpleIngredient();
+        Log.d("TAG", "URL is: " + recipeURL);
+        client.get(recipeURL, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Headers headers, JSON json) {
+                Log.d(TAG, "successfully grabbed replacements " + json.toString());
+            }
+
+            @Override
+            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+                Log.d(TAG, "failed : ( " + s + throwable.toString());
+            }
+        });
+    }
+
+    public void addRadioButtons(int number) {
+        rgOptions.setOrientation(LinearLayout.VERTICAL);
+        for (int i = 1; i <= number; i++) {
+            RadioButton rdbtn = new RadioButton(this);
+            rdbtn.setId(View.generateViewId());
+            rdbtn.setText("Radio " + rdbtn.getId());
+            rgOptions.addView(rdbtn);
+        }
+    }
+}

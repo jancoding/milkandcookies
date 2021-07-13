@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.adapters.DetailFragmentAdapter;
 import com.github.florent37.materialviewpager.MaterialViewPager;
@@ -29,8 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     private String URL;
     private final String TAG = "DetailActivity";
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
-    private ArrayList<String> ingredients;
-    private MaterialViewPager mViewPager;
+    private ArrayList<Ingredient> ingredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +63,13 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    public ArrayList<String> getIngredients(JsonHttpResponseHandler.JSON json) {
-        ArrayList<String> ingredients = new ArrayList<>();
+    public ArrayList<Ingredient> getIngredients(JsonHttpResponseHandler.JSON json) {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
         try {
             JSONArray extendedIngredients = json.jsonObject.getJSONArray("extendedIngredients");
             for (int i = 0; i < extendedIngredients.length(); i++) {
                 JSONObject ingredient = extendedIngredients.getJSONObject(i);
-                ingredients.add(ingredient.getString("originalString"));
+                ingredients.add(new Ingredient(ingredient.getString("originalString"), ingredient.getString("name")));
             }
 
         } catch (JSONException e) {
@@ -79,17 +79,13 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager() {
-        mViewPager = findViewById(R.id.materialViewPager);
-        ViewPager viewPager = mViewPager.getViewPager();
+        ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new DetailFragmentAdapter(getSupportFragmentManager(),
                 DetailActivity.this, ingredients));
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_detail);
         tabLayout.setupWithViewPager(viewPager);
 
-        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-        mViewPager.getToolbar().setVisibility(GONE);
-        mViewPager.getPagerTitleStrip().setTextColor(Color.WHITE);
 
     }
 

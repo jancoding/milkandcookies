@@ -1,5 +1,6 @@
 package com.example.milkandcookies.adapters;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,15 +11,18 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.milkandcookies.Ingredient;
+import com.example.milkandcookies.activities.ReplaceActivity;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
-    List<String> ingredients;
+    List<Ingredient> ingredients;
 
-    public IngredientAdapter(List<String> ingredients) {
+    public IngredientAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
 
     }
@@ -36,7 +40,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull @NotNull IngredientAdapter.ViewHolder holder, int position) {
         // Grab the item at the position
-        String item = ingredients.get(position);
+        Ingredient item = ingredients.get(position);
         // Bind the item into the specified viewHolder
         holder.bind(item);
     }
@@ -46,18 +50,26 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         return ingredients.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvIngredient;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvIngredient = itemView.findViewById(android.R.id.text1);
+            itemView.setOnClickListener(this);
         }
 
         // Update the view inside of the holder with this data
-        public void bind(String item) {
-            tvIngredient.setText(item);
+        public void bind(Ingredient item) {
+            tvIngredient.setText(item.getFullIngredient());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(itemView.getContext(), ReplaceActivity.class);
+            intent.putExtra("ingredient", ingredients.get(getAdapterPosition()));
+            itemView.getContext().startActivity(intent);
         }
     }
 }

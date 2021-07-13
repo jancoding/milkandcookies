@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.adapters.IngredientAdapter;
 import com.example.milkandcookies.R;
 
@@ -30,19 +31,19 @@ public class RecipeFragment extends Fragment {
     public int page;
     private RecyclerView rvIngredients;
     private IngredientAdapter ingredientAdapter;
-    private ArrayList<String> ingredients;
+    private ArrayList<Ingredient> ingredients;
 
     public RecipeFragment() {
         // Required empty public constructor
     }
 
-    public RecipeFragment(int page, ArrayList<String> ingredients) {
+    public RecipeFragment(int page, ArrayList<Ingredient> ingredients) {
         this.page = page;
         this.ingredients = ingredients;
     }
 
     // returns a new instance of the follower class
-    public static RecipeFragment newInstance(int page, ArrayList<String> ingredients) {
+    public static RecipeFragment newInstance(int page, ArrayList<Ingredient> ingredients) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         RecipeFragment fragment = new RecipeFragment(page, ingredients);
@@ -71,7 +72,7 @@ public class RecipeFragment extends Fragment {
         ingredientAdapter = new IngredientAdapter(ingredients);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ingredients = getArguments().getStringArrayList("ingredients");
+        ingredients = (ArrayList<Ingredient>) getArguments().get("ingredients");
 
         setUpPage(view);
     }
