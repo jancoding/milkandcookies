@@ -11,6 +11,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.R;
+import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.adapters.DetailFragmentAdapter;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.google.android.material.tabs.TabLayout;
@@ -35,6 +36,8 @@ public class DetailActivity extends AppCompatActivity {
     private final String TAG = "DetailActivity";
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     private JSONArray ingredients;
+    private ParseObject recipe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void pushNewRecipe(JsonHttpResponseHandler.JSON json) {
-        ParseObject recipe =  ParseObject.create("Recipe");
+        recipe =  ParseObject.create("Recipe");
         // put necessary recipe parameters
         recipe.put("ingredients_original", ingredients);
         Log.d(TAG, "after i put the ingredients list in the recipe this is what it is : " + ingredients.toString());
@@ -137,7 +140,7 @@ public class DetailActivity extends AppCompatActivity {
     private void setUpViewPager() {
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new DetailFragmentAdapter(getSupportFragmentManager(),
-                DetailActivity.this, ingredients));
+                DetailActivity.this, ingredients, recipe));
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_detail);
         tabLayout.setupWithViewPager(viewPager);

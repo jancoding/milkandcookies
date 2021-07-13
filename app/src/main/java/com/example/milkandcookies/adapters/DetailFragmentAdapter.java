@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.fragments.RecipeFragment;
+import com.parse.ParseObject;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -23,20 +24,22 @@ public class DetailFragmentAdapter extends FragmentPagerAdapter {
     private String tabTitles[];
     private Context context;
     private JSONArray ingredients;
+    private ParseObject recipe;
 
-    public DetailFragmentAdapter(FragmentManager fm, Context context, JSONArray ingredients) {
+    public DetailFragmentAdapter(FragmentManager fm, Context context, JSONArray ingredients, ParseObject recipe) {
         super(fm);
         this.context = context;
         PAGE_COUNT = 2;
         tabTitles = new String[] { "Original", "Modified" };
         this.ingredients = ingredients;
+        this.recipe = recipe;
     }
 
     @NonNull
     @NotNull
     @Override
     public Fragment getItem(int position) {
-        return RecipeFragment.newInstance(position + 1, ingredients);
+        return RecipeFragment.newInstance(position + 1, ingredients, recipe);
     }
 
     @Override

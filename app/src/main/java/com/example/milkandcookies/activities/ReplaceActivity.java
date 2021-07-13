@@ -14,6 +14,10 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.Headers;
 
 public class ReplaceActivity extends AppCompatActivity {
@@ -27,8 +31,10 @@ public class ReplaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replace);
+        rgOptions = findViewById(R.id.rgOptions);
         ingredient = (Ingredient) getIntent().getSerializableExtra("ingredient");
         getReplacements(ingredient);
+
     }
 
 
@@ -40,6 +46,7 @@ public class ReplaceActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 Log.d(TAG, "successfully grabbed replacements " + json.toString());
+                getReplacementsfromJSON(json);
             }
 
             @Override
@@ -49,12 +56,28 @@ public class ReplaceActivity extends AppCompatActivity {
         });
     }
 
-    public void addRadioButtons(int number) {
+    private void getReplacementsfromJSON(JsonHttpResponseHandler.JSON json) {
+        JSONObject jsonObject = json.jsonObject;
+        try {
+            JSONArray jsonArray = jsonObject.getJSONArray("substitutes");
+            addRadioButtons(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void addRadioButtons(JSONArray substitutes) {
         rgOptions.setOrientation(LinearLayout.VERTICAL);
-        for (int i = 1; i <= number; i++) {
+        for (int i = 0; i < substitutes.length(); i++) {
             RadioButton rdbtn = new RadioButton(this);
             rdbtn.setId(View.generateViewId());
-            rdbtn.setText("Radio " + rdbtn.getId());
+            try {
+                rdbtn.setText(substitutes.getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             rgOptions.addView(rdbtn);
         }
     }
