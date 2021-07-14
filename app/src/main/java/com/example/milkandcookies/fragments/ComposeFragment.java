@@ -177,7 +177,6 @@ public class ComposeFragment extends Fragment {
     private void goDetailActivity() {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("recipe", recipe);
-        Log.d(TAG, etURL.getText().toString());
         startActivity(intent);
     }
 }

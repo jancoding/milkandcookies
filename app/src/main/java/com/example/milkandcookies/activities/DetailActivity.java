@@ -46,7 +46,11 @@ public class DetailActivity extends AppCompatActivity {
         URL = getIntent().getStringExtra("URL");
         recipe = (Recipe) getIntent().getSerializableExtra("recipe");
         ingredients = recipe.getOriginal();
-        Log.d(TAG, ingredients.toString());
+        try {
+            Log.d(TAG, ingredients.get(0).getClass() + "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         setUpViewPager();
     }
 
