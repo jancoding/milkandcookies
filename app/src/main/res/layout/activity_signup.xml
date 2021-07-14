@@ -96,6 +96,7 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_below="@id/rgDietary"
         android:layout_marginTop="15dp"
@@ -104,19 +105,18 @@
         android:text="Add"
     />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAllergens"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvAllergen"
-        android:layout_marginTop="10dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/llAllergens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnAdd"
     />
-
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rvAllergens"
+        android:layout_below="@id/llAllergens"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:text="Let's get cooking!"

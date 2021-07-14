@@ -16,6 +16,7 @@ public class Recipe extends ParseObject implements Serializable {
     public static final String KEY_MODIFIED = "ingredients_modified";
     public static final String KEY_USER = "owner";
     public static final String KEY_INSTRUCTIONS = "instructions";
+    public static final String KEY_TITLE = "title";
 
     public JSONArray getInstructions() {
         return getJSONArray(KEY_INSTRUCTIONS);
@@ -47,6 +48,14 @@ public class Recipe extends ParseObject implements Serializable {
 
     public void setModified(JSONArray modified) {
         put(KEY_MODIFIED, modified);
+    }
+
+    public String getTitle() {
+        return getString(KEY_TITLE);
+    }
+
+    public void setTitle(String title) {
+        put(KEY_TITLE, title);
     }
 
 }

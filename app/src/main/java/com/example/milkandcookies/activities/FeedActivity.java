@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.fragments.ComposeFragment;
+import com.example.milkandcookies.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FeedActivity extends AppCompatActivity {
@@ -29,6 +30,8 @@ public class FeedActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.home:
+                        fragment = new HomeFragment();
+                        fragmentManager.beginTransaction().replace(R.id.rlFeed, fragment).commit();
                         break;
                     case R.id.new_recipe:
                         fragment = new ComposeFragment();

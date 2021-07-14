@@ -28,7 +28,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
     public IngredientAdapter(JSONArray ingredients) {
         this.ingredients = ingredients;
-
     }
 
     @NonNull

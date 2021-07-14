@@ -45,9 +45,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         URL = getIntent().getStringExtra("URL");
         getRecipe(URL);
-
     }
-
 
     public void getRecipe(String url) {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -77,7 +75,11 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(TAG, "after i put the ingredients list in the recipe this is what it is : " + ingredients.toString());
         recipe.put("owner", ParseUser.getCurrentUser());
         recipe.put("instructions", getInstructions(json.jsonObject));
-
+        try {
+            recipe.put("title", json.jsonObject.getString("title"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         recipe.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
