@@ -11,11 +11,13 @@ import java.io.Serializable;
 @ParseClassName("Ingredient")
 public class Ingredient extends ParseObject implements Serializable {
     public static final String KEY_ORIGINAL = "original_string";
+    public static final String KEY_MODIFIED = "modified_string";
     public static final String KEY_NAME = "name";
     public static final String KEY_USAMOUNT = "us_amount";
     public static final String KEY_USUNIT = "us_unit";
     public static final String KEY_METRICAMOUNT = "metric_amount";
     public static final String KEY_METRICUNIT = "metric_unit";
+
 
     public String getOriginal() {
         return getString(KEY_ORIGINAL);
@@ -23,6 +25,14 @@ public class Ingredient extends ParseObject implements Serializable {
 
     public void setOriginal(String original) {
         put(KEY_ORIGINAL, original);
+    }
+
+    public String getModified() {
+        return getString(KEY_MODIFIED);
+    }
+
+    public void setModified(String original) {
+        put(KEY_MODIFIED, original);
     }
 
     public String getName() {
@@ -33,11 +43,11 @@ public class Ingredient extends ParseObject implements Serializable {
         put(KEY_NAME, name);
     }
 
-    public int getUSAmount() {
+    public double getUSAmount() {
         return getInt(KEY_USAMOUNT);
     }
 
-    public void setUSAmount(int amount) {
+    public void setUSAmount(double amount) {
         put(KEY_USAMOUNT, amount);
     }
 
@@ -50,11 +60,11 @@ public class Ingredient extends ParseObject implements Serializable {
     }
 
 
-    public int getMetricAmount() {
+    public double getMetricAmount() {
         return getInt(KEY_METRICAMOUNT);
     }
 
-    public void setMetricAmount(int amount) {
+    public void setMetricAmount(double amount) {
         put(KEY_METRICAMOUNT, amount);
     }
 

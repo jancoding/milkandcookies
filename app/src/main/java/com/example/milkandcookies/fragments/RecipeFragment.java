@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.milkandcookies.Ingredient;
@@ -42,6 +44,7 @@ public class RecipeFragment extends Fragment {
     private TextView tvInstructions;
     private List<Ingredient> ingredients;
     private ParseObject recipe;
+    private Switch switchUnits;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -80,14 +83,41 @@ public class RecipeFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvIngredients = view.findViewById(R.id.rvIngredients);
+        switchUnits = view.findViewById(R.id.switchUnits);
         ingredientAdapter = new IngredientAdapter(ingredients);
         tvInstructions = view.findViewById(R.id.tvInstructions);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
         tvInstructions.setText(decomposeInstructions(((Recipe) recipe).getInstructions()));
 
+        switchUnits.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    getMetric(ingredients);
+                    ingredientAdapter.notifyDataSetChanged();
+                } else {
+                    getUS(ingredients);
+                    ingredientAdapter.notifyDataSetChanged();
 
+                }
+            }
+        });
         setUpPage(view);
+    }
+
+    private void getMetric(List<Ingredient> ingredients) {
+        for (Ingredient ingredient: ingredients) {
+            ingredient.setModified(ingredient.getMetricAmount() + " " + ingredient.getMetricUnit() + " " + ingredient.getName());
+            ingredient.saveInBackground();
+        }
+    }
+
+    private void getUS(List<Ingredient> ingredients) {
+        for (Ingredient ingredient: ingredients) {
+            ingredient.setModified(ingredient.getOriginal());
+            ingredient.saveInBackground();
+        }
     }
 
     private String decomposeInstructions(JSONArray jsonArray) {

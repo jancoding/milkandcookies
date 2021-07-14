@@ -121,9 +121,10 @@ public class ComposeFragment extends Fragment {
         Ingredient ingredient_parse = new Ingredient();
         try {
             ingredient_parse.setOriginal(object.getString("originalString"));
+            ingredient_parse.put("modified_string", object.getString("originalString"));
             ingredient_parse.setName(object.getString("name"));
-            ingredient_parse.setUSAmount(object.getJSONObject("measures").getJSONObject("us").getInt("amount"));
-            ingredient_parse.setMetricAmount(object.getJSONObject("measures").getJSONObject("metric").getInt("amount"));
+            ingredient_parse.setUSAmount(object.getJSONObject("measures").getJSONObject("us").getDouble("amount"));
+            ingredient_parse.setMetricAmount(object.getJSONObject("measures").getJSONObject("metric").getDouble("amount"));
             ingredient_parse.setUSUnit(object.getJSONObject("measures").getJSONObject("us").getString("unitShort") + "");
             ingredient_parse.put("recipe", recipe);
             ingredient_parse.setMetricUnit(object.getJSONObject("measures").getJSONObject("metric").getString("unitShort"));

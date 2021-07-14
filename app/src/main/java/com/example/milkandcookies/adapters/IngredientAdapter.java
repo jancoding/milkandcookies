@@ -68,7 +68,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
-            tvIngredient.setText(item.getOriginal());
+            tvIngredient.setText(item.getModified());
         }
 
         @Override

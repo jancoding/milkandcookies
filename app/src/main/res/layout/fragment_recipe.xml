@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RecipeFragment">
 
+    <Switch
+        android:id="@+id/switchUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvIngredients"
         android:layout_width="match_parent"
+        android:layout_below="@id/switchUnits"
         android:layout_height="350dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
