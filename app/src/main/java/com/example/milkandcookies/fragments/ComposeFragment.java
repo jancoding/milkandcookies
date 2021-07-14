@@ -91,7 +91,6 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 Log.d(TAG, "succesful in retrieval, data is: " + json);
-                ingredients = getIngredients(json);
                 pushNewRecipe(json);
             }
 
@@ -126,6 +125,7 @@ public class ComposeFragment extends Fragment {
             ingredient_parse.setUSAmount(object.getJSONObject("measures").getJSONObject("us").getInt("amount"));
             ingredient_parse.setMetricAmount(object.getJSONObject("measures").getJSONObject("metric").getInt("amount"));
             ingredient_parse.setUSUnit(object.getJSONObject("measures").getJSONObject("us").getString("unitShort") + "");
+            ingredient_parse.put("recipe", recipe);
             ingredient_parse.setMetricUnit(object.getJSONObject("measures").getJSONObject("metric").getString("unitShort"));
             ingredient_parse.saveInBackground();
         } catch (JSONException e) {
@@ -137,9 +137,6 @@ public class ComposeFragment extends Fragment {
 
     private void pushNewRecipe(JsonHttpResponseHandler.JSON json) {
         recipe =  ParseObject.create("Recipe");
-        // put necessary recipe parameters
-        recipe.put("ingredients_original", ingredients);
-        Log.d(TAG, "after i put the ingredients list in the recipe this is what it is : " + ingredients.toString());
         recipe.put("owner", ParseUser.getCurrentUser());
         recipe.put("instructions", getInstructions(json.jsonObject));
         try {
@@ -152,6 +149,7 @@ public class ComposeFragment extends Fragment {
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d(TAG, "successfully saved this new recipe");
+                    getIngredients(json);
                     goDetailActivity();
                 } else {
                     Log.d(TAG, "failed to save this new recipe " + e.toString());

@@ -15,8 +15,10 @@ import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.adapters.DetailFragmentAdapter;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.google.android.material.tabs.TabLayout;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Headers;
 
@@ -35,7 +38,6 @@ public class DetailActivity extends AppCompatActivity {
     private String URL;
     private final String TAG = "DetailActivity";
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
-    private JSONArray ingredients;
     private Recipe recipe;
 
 
@@ -45,16 +47,32 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         URL = getIntent().getStringExtra("URL");
         recipe = (Recipe) getIntent().getSerializableExtra("recipe");
-        ingredients = recipe.getOriginal();
-        try {
-            Log.d(TAG, ingredients.get(0).getClass() + "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        setUpViewPager();
+        getIngredients();
     }
 
-    private void setUpViewPager() {
+    private void getIngredients() {
+        JSONArray jsonArray = new JSONArray();
+        // Define the class we would like to query
+        ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
+        // limit query to latest 20 items
+        query.setLimit(30);
+        query.whereEqualTo("recipe", recipe);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
+        // Execute the find asynchronously
+        query.findInBackground(new FindCallback<Ingredient>() {
+            public void done(List<Ingredient> itemList, ParseException e) {
+                if (e == null) {
+                    // Access the array of results here
+                    setUpViewPager(itemList);
+                } else {
+                    Log.d("item", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void setUpViewPager(List<Ingredient> ingredients) {
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new DetailFragmentAdapter(getSupportFragmentManager(),
                 DetailActivity.this, ingredients, recipe));

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailFragmentAdapter extends FragmentPagerAdapter {
 
@@ -23,10 +24,10 @@ public class DetailFragmentAdapter extends FragmentPagerAdapter {
     // titles of each tab
     private String tabTitles[];
     private Context context;
-    private JSONArray ingredients;
+    private List<Ingredient> ingredients;
     private ParseObject recipe;
 
-    public DetailFragmentAdapter(FragmentManager fm, Context context, JSONArray ingredients, ParseObject recipe) {
+    public DetailFragmentAdapter(FragmentManager fm, Context context, List<Ingredient> ingredients, ParseObject recipe) {
         super(fm);
         this.context = context;
         PAGE_COUNT = 2;

@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,21 +40,21 @@ public class RecipeFragment extends Fragment {
     private RecyclerView rvIngredients;
     private IngredientAdapter ingredientAdapter;
     private TextView tvInstructions;
-    private JSONArray ingredients;
+    private List<Ingredient> ingredients;
     private ParseObject recipe;
 
     public RecipeFragment() {
         // Required empty public constructor
     }
 
-    public RecipeFragment(int page, JSONArray ingredients, ParseObject recipe) {
+    public RecipeFragment(int page, List<Ingredient> ingredients, ParseObject recipe) {
         this.page = page;
         this.ingredients = ingredients;
         this.recipe = recipe;
     }
 
     // returns a new instance of the follower class
-    public static RecipeFragment newInstance(int page, JSONArray ingredients, ParseObject recipe) {
+    public static RecipeFragment newInstance(int page, List<Ingredient> ingredients, ParseObject recipe) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         RecipeFragment fragment = new RecipeFragment(page, ingredients, recipe);
@@ -83,7 +84,6 @@ public class RecipeFragment extends Fragment {
         tvInstructions = view.findViewById(R.id.tvInstructions);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ingredients = (JSONArray) getArguments().get("ingredients");
         tvInstructions.setText(decomposeInstructions(((Recipe) recipe).getInstructions()));
 
 

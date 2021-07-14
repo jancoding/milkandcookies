@@ -25,9 +25,9 @@ import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
-    JSONArray ingredients;
+    List<Ingredient> ingredients;
 
-    public IngredientAdapter(JSONArray ingredients) {
+    public IngredientAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -45,18 +45,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public void onBindViewHolder(@NonNull @NotNull IngredientAdapter.ViewHolder holder, int position) {
         // Grab the item at the position
         Ingredient item = null;
-        try {
-            item = (Ingredient) ingredients.get(position);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        item = (Ingredient) ingredients.get(position);
+
         // Bind the item into the specified viewHolder
         holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.length();
+        return ingredients.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -77,11 +74,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(itemView.getContext(), ReplaceActivity.class);
-            try {
-                intent.putExtra("ingredient", (Serializable) ingredients.get(getAdapterPosition()));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            intent.putExtra("ingredient", (Serializable) ingredients.get(getAdapterPosition()));
             itemView.getContext().startActivity(intent);
         }
     }
