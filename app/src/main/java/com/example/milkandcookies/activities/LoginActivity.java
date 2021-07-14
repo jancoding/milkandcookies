@@ -28,6 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if (ParseUser.getCurrentUser() != null) {
+            goFeedActivity();
+        }
+
         // link view
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
@@ -60,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     private void goFeedActivity() {
         Intent intent = new Intent(this, FeedActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void loginUser(String username, String password) {

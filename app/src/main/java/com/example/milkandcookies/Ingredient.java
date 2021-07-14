@@ -44,7 +44,7 @@ public class Ingredient extends ParseObject implements Serializable {
     }
 
     public double getUSAmount() {
-        return getInt(KEY_USAMOUNT);
+        return getDouble(KEY_USAMOUNT);
     }
 
     public void setUSAmount(double amount) {
@@ -61,7 +61,7 @@ public class Ingredient extends ParseObject implements Serializable {
 
 
     public double getMetricAmount() {
-        return getInt(KEY_METRICAMOUNT);
+        return getDouble(KEY_METRICAMOUNT);
     }
 
     public void setMetricAmount(double amount) {
