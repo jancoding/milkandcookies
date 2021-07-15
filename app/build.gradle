@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.codepath.libraries:asynchttpclient:2.0.0'
     compile 'com.github.florent37:materialviewpager:1.2.3'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.android.volley:volley:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
