@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.R;
@@ -18,7 +19,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static java.net.Proxy.Type.HTTP;
 
 public class ReplaceActivity extends AppCompatActivity {
 
@@ -26,6 +36,7 @@ public class ReplaceActivity extends AppCompatActivity {
     private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     private Ingredient ingredient;
     private final String TAG = "ReplaceActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +47,7 @@ public class ReplaceActivity extends AppCompatActivity {
         getReplacements(ingredient);
 
     }
+
 
 
     public void getReplacements(Ingredient ingredient) {
