@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class RecipeFragment extends Fragment {
     private RecyclerView rvIngredients;
     private IngredientAdapter ingredientAdapter;
     private TextView tvInstructions;
+    private TextView tvTitle;
     private List<Ingredient> ingredients;
     private ParseObject recipe;
     private Switch switchUnits;
@@ -82,9 +84,12 @@ public class RecipeFragment extends Fragment {
         switchUnits = view.findViewById(R.id.switchUnits);
         ingredientAdapter = new IngredientAdapter(ingredients);
         tvInstructions = view.findViewById(R.id.tvInstructions);
+        tvTitle = view.findViewById(R.id.tvTitle);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
         tvInstructions.setText(decomposeInstructions(((Recipe) recipe).getInstructions()));
+        tvTitle.setText(((Recipe) recipe).getTitle());
+        tvInstructions.setMovementMethod(new ScrollingMovementMethod());
 
         // listener for switch to transition between metric and us measurements
         switchUnits.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -125,7 +130,7 @@ public class RecipeFragment extends Fragment {
         String text = "";
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                text = text + jsonArray.getString(i) + "\n";
+                text = text + (i+1) + ". " + jsonArray.getString(i) + "\n\n";
             } catch (JSONException e) {
                 e.printStackTrace();
             }

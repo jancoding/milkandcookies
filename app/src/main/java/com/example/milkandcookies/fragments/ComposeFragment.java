@@ -80,7 +80,7 @@ public class ComposeFragment extends Fragment {
     // sends get request for spoonacular API to retrieve recipe from website
     public void getRecipe(String url) {
         AsyncHttpClient client = new AsyncHttpClient();
-        String recipeURL = BASE_URL + "&url=" + url;
+        String recipeURL = BASE_URL + "&url=" + url + "&analyze=true";
         Log.d(TAG, "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
@@ -135,6 +135,15 @@ public class ComposeFragment extends Fragment {
         recipe =  ParseObject.create("Recipe");
         recipe.put("owner", ParseUser.getCurrentUser());
         recipe.put("instructions", getInstructions(json.jsonObject));
+        try {
+            recipe.put("vegan", json.jsonObject.getBoolean("vegan"));
+            recipe.put("vegetarian", json.jsonObject.getBoolean("vegetarian"));
+            recipe.put("gluten_free", json.jsonObject.getBoolean("glutenFree"));
+            recipe.put("dairy_free", json.jsonObject.getBoolean("dairyFree"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         try {
             recipe.put("title", json.jsonObject.getString("title"));
         } catch (JSONException e) {
