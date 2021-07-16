@@ -33,11 +33,14 @@ import okhttp3.Headers;
 
 import static android.view.View.GONE;
 
+// Detail view of a specific recipe
 public class DetailActivity extends AppCompatActivity {
 
-    private String URL;
+    // tag for log calls
     private final String TAG = "DetailActivity";
+    // url for api calls TODO: replace ID in secrets.xml file
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+    // recipe that the detail view is displaying
     private Recipe recipe;
 
 
@@ -45,21 +48,18 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        URL = getIntent().getStringExtra("URL");
+        // retrieves recipe and ingredients associated with the recipe
         recipe = (Recipe) getIntent().getSerializableExtra("recipe");
         getIngredients();
     }
 
+    // requests the Parse database storing ingredients for the recipe
     private void getIngredients() {
         JSONArray jsonArray = new JSONArray();
-        // Define the class we would like to query
         ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
-        // limit query to latest 20 items
         query.setLimit(30);
         query.whereEqualTo("recipe", recipe);
-        // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
-        // Execute the find asynchronously
         query.findInBackground(new FindCallback<Ingredient>() {
             public void done(List<Ingredient> itemList, ParseException e) {
                 if (e == null) {
@@ -72,6 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    // sets up the view pager for the detail activity (will be used later for original vs modified ingredients)
     private void setUpViewPager(List<Ingredient> ingredients) {
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new DetailFragmentAdapter(getSupportFragmentManager(),

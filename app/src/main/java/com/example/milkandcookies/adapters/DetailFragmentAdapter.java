@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+// adapter for view pager in detail activity TODO: implement original vs modified view
 public class DetailFragmentAdapter extends FragmentPagerAdapter {
 
     // number of tabs in this PageAdapter

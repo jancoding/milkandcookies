@@ -59,7 +59,6 @@ public class Ingredient extends ParseObject implements Serializable {
         put(KEY_USUNIT, unit);
     }
 
-
     public double getMetricAmount() {
         return getDouble(KEY_METRICAMOUNT);
     }

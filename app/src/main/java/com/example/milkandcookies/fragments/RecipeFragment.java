@@ -30,11 +30,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecipeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+// fragment for recipe view in detail activity TODO: configure for original vs modified recipe
 public class RecipeFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -90,6 +86,7 @@ public class RecipeFragment extends Fragment {
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
         tvInstructions.setText(decomposeInstructions(((Recipe) recipe).getInstructions()));
 
+        // listener for switch to transition between metric and us measurements
         switchUnits.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -99,13 +96,15 @@ public class RecipeFragment extends Fragment {
                 } else {
                     getUS(ingredients);
                     ingredientAdapter.notifyDataSetChanged();
-
                 }
             }
         });
+
+        // determines whether the view should be original or modified
         setUpPage(view);
     }
 
+    // retrieves metric amounts from the database
     private void getMetric(List<Ingredient> ingredients) {
         for (Ingredient ingredient: ingredients) {
             ingredient.setModified(ingredient.getMetricAmount() + " " + ingredient.getMetricUnit() + " " + ingredient.getName());
@@ -113,6 +112,7 @@ public class RecipeFragment extends Fragment {
         }
     }
 
+    // retrieves us amounts from the database
     private void getUS(List<Ingredient> ingredients) {
         for (Ingredient ingredient: ingredients) {
             ingredient.setModified(ingredient.getOriginal());
@@ -120,6 +120,7 @@ public class RecipeFragment extends Fragment {
         }
     }
 
+    // formats instructions for the recipe
     private String decomposeInstructions(JSONArray jsonArray) {
         String text = "";
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -132,6 +133,7 @@ public class RecipeFragment extends Fragment {
         return text;
     }
 
+    // BELOW: code to handle original vs modified view for recipe
     private void setUpPage(View view) {
         if (this.page == 1) {
             createOriginal(view);

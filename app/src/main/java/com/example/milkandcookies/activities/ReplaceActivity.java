@@ -30,13 +30,14 @@ import okhttp3.Response;
 
 import static java.net.Proxy.Type.HTTP;
 
+// Activity for users selecting replacements for ingredients
 public class ReplaceActivity extends AppCompatActivity {
 
     private RadioGroup rgOptions;
+    // base url for spponacular api substitutes TODO: put API key in secrets.xml file
     private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     private Ingredient ingredient;
     private final String TAG = "ReplaceActivity";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,9 @@ public class ReplaceActivity extends AppCompatActivity {
         rgOptions = findViewById(R.id.rgOptions);
         ingredient = (Ingredient) getIntent().getSerializableExtra("ingredient");
         getReplacements(ingredient);
-
     }
 
-
-
+    // retrieves replacements from spoonacular API
     public void getReplacements(Ingredient ingredient) {
         AsyncHttpClient client = new AsyncHttpClient();
         String recipeURL = BASE_URL + "&ingredientName=" + ingredient.getOriginal();
@@ -60,7 +59,6 @@ public class ReplaceActivity extends AppCompatActivity {
                 Log.d(TAG, "successfully grabbed replacements " + json.toString());
                 getReplacementsfromJSON(json);
             }
-
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
                 Log.d(TAG, "failed : ( " + s + throwable.toString());
@@ -68,6 +66,7 @@ public class ReplaceActivity extends AppCompatActivity {
         });
     }
 
+    // parses JSON response from spoonacular api and creates buttons for every replacement option
     private void getReplacementsfromJSON(JsonHttpResponseHandler.JSON json) {
         JSONObject jsonObject = json.jsonObject;
         try {
@@ -78,8 +77,7 @@ public class ReplaceActivity extends AppCompatActivity {
         }
     }
 
-
-
+    // adds radio buttons to view for every substitute in JSONArray input
     public void addRadioButtons(JSONArray substitutes) {
         rgOptions.setOrientation(LinearLayout.VERTICAL);
         for (int i = 0; i < substitutes.length(); i++) {

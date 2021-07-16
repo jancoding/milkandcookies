@@ -52,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         layout = (LinearLayout) findViewById(R.id.llAllergens);
 
+        // listener to sign up user once submit button is clicked
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +60,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        // listener to add variable number of allergens
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    // creates a new user with filled in fields in parse
     private void signupUser() {
         ParseUser user = new ParseUser();
         user.setUsername(etUsername.getText().toString());
@@ -88,6 +91,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    // retrieves the allergens from variable number of Edit Texts
     private JSONArray getAllergens() {
         JSONArray jsonArray = new JSONArray();
         for (EditText allergen: allergens) {
@@ -96,11 +100,13 @@ public class SignupActivity extends AppCompatActivity {
         return jsonArray;
     }
 
+    // changes screen to FeedActivity
     private void goFeedActivity() {
         Intent intent = new Intent(this, FeedActivity.class);
         startActivity(intent);
     }
 
+    // programattically adds edit texts to the view
     public void addEditText() {
         EditText etAllergen = new EditText(this);
         etAllergen.setId(View.generateViewId());

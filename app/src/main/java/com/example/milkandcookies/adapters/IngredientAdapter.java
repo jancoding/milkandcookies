@@ -23,6 +23,7 @@ import org.json.JSONException;
 import java.io.Serializable;
 import java.util.List;
 
+// adapter for recycler view displaying ingredients in detail activity
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
     List<Ingredient> ingredients;
@@ -46,7 +47,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         // Grab the item at the position
         Ingredient item = null;
         item = (Ingredient) ingredients.get(position);
-
         // Bind the item into the specified viewHolder
         holder.bind(item);
     }
@@ -71,6 +71,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             tvIngredient.setText(item.getModified());
         }
 
+        // goes to replace activity to find alternatives for ingredient selected
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(itemView.getContext(), ReplaceActivity.class);

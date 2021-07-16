@@ -32,18 +32,13 @@ import java.io.Serializable;
 
 import okhttp3.Headers;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ComposeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+// fragment to compose a new recipe
 public class ComposeFragment extends Fragment {
 
     private Button btnSubmit;
     private EditText etURL;
     private final String  TAG = "ComposeFragment";
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
-    private JSONArray ingredients;
     private ParseObject recipe;
 
 
@@ -59,7 +54,6 @@ public class ComposeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -74,7 +68,7 @@ public class ComposeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         etURL = view.findViewById(R.id.etURL);
-
+        // listener for submit button to push new recipe to parse database
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,25 +77,25 @@ public class ComposeFragment extends Fragment {
         });
     }
 
+    // sends get request for spoonacular API to retrieve recipe from website
     public void getRecipe(String url) {
         AsyncHttpClient client = new AsyncHttpClient();
         String recipeURL = BASE_URL + "&url=" + url;
-        Log.d("TAG", "URL is: " + recipeURL);
+        Log.d(TAG, "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 Log.d(TAG, "succesful in retrieval, data is: " + json);
                 pushNewRecipe(json);
             }
-
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
                 Log.d(TAG, "failed in retrieval : (" + s + throwable.toString());
-
             }
         });
     }
 
+    // retrieves ingredients from json response of spoonacular api
     private JSONArray getIngredients(JsonHttpResponseHandler.JSON json) {
         JSONArray ingredients = new JSONArray();
         try {
@@ -116,6 +110,7 @@ public class ComposeFragment extends Fragment {
         return ingredients;
     }
 
+    // creates new ingredients by specifying required fields and pushing to parse
     private Ingredient createIngredient(JSONObject object) {
         // creates a new ingredient and adds it to the database
         Ingredient ingredient_parse = new Ingredient();
@@ -132,10 +127,10 @@ public class ComposeFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return ingredient_parse;
     }
 
+    // pushes a new recipe to the parse website
     private void pushNewRecipe(JsonHttpResponseHandler.JSON json) {
         recipe =  ParseObject.create("Recipe");
         recipe.put("owner", ParseUser.getCurrentUser());
@@ -159,6 +154,7 @@ public class ComposeFragment extends Fragment {
         });
     }
 
+    // retrieves ingredients by steps from json response of spoonacular
     private JSONArray getInstructions(JSONObject object) {
         JSONArray steps_cleaned = new JSONArray();
         try {
@@ -169,10 +165,10 @@ public class ComposeFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return steps_cleaned;
     }
 
+    // transitions to the detail activity specifying the recipe
     private void goDetailActivity() {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("recipe", recipe);

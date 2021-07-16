@@ -41,6 +41,7 @@ import okhttp3.OkHttpClient;
 //import okhttp3.Response;
 import okhttp3.internal.http2.Header;
 
+// Activity for logging in a user or launching sign up
 public class LoginActivity extends AppCompatActivity {
 
     private Button btnSignup;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // login persistence between app uses
         if (ParseUser.getCurrentUser() != null) {
             goFeedActivity();
         }
@@ -79,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(etUsername.getText().toString(), etPassword.getText().toString());
             }
         });
-        BonAPITest();
     }
 
+    // TODO: fix and understand how to query BonAPI
     private void BonAPITest() {
-
+        // METHOD 1: testing to post to BonAPI
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest sr = new StringRequest(Request.Method.POST,"https://www.bon-api.com/api/v1/ingredient/alternatives", new Response.Listener<String>() {
             @Override
@@ -101,24 +103,22 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String,String> params = new HashMap<String, String>();
                 return params;
             }
-
             @Override
             public byte[] getBody() throws AuthFailureError {
                 String body = "{\"ingredients\": ['250gr white wheat flour', '50ml cow milk', '1 chicken breast', '0.5 cups of white rice']}";
                 return body.getBytes();
             }
-
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/json");
                 params.put("Authorization","50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7");
+                params.put("Content-Type","application/json");
                 return params;
             }
         };
         queue.add(sr);
 
+        // METHOD 2: testing to post to BonAPI
 //        final MediaType JSON
 //                = MediaType.parse("application/json; charset=utf-8");
 //        OkHttpClient client = new OkHttpClient();
@@ -147,20 +147,22 @@ public class LoginActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-
     }
 
+    // goes to sign up activity
     private void goSignUp() {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
 
+    // goes to feed activity and removes view from view hierarchy
     private void goFeedActivity() {
         Intent intent = new Intent(this, FeedActivity.class);
         startActivity(intent);
         finish();
     }
 
+    // logs the user with specific username and password into parse
     private void loginUser(String username, String password) {
         Log.i(TAG, "Attempting to login user " + username);
         ParseUser.logInInBackground(username, password, new LogInCallback() {

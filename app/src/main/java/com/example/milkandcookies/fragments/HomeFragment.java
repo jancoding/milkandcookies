@@ -27,11 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+// fragment for home/feed view
 public class HomeFragment extends Fragment {
 
     protected RecyclerView rvRecipes;
@@ -42,8 +38,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -68,24 +62,19 @@ public class HomeFragment extends Fragment {
         rAdapter = new RecipeAdapter(getContext(), recipes);
         rvRecipes.setAdapter(rAdapter);
         rvRecipes.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        getPosts();
+        getRecipes();
     }
 
-    private void getPosts() {
-        // Define the class we would like to query
+    // retrieves recipes from parse linked to the current user
+    private void getRecipes() {
         ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
         query.include(Recipe.KEY_USER);
-        // limit query to latest 20 items
         query.setLimit(20);
-        // order posts by creation date (newest first)
         query.whereEqualTo(Recipe.KEY_USER, ParseUser.getCurrentUser());
         query.addDescendingOrder("createdAt");
-        // Execute the find asynchronously
         query.findInBackground(new FindCallback<Recipe>() {
             public void done(List<Recipe> itemList, ParseException e) {
                 if (e == null) {
-                    // Access the array of results here
                     recipes.clear();
                     recipes.addAll(itemList);
                     rAdapter.notifyDataSetChanged();
