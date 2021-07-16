@@ -73,7 +73,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
             tvIngredient.setText(item.getModified());
-            Log.d("here", "hereeeee");
             checkAllergen();
         }
 
@@ -85,13 +84,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             itemView.getContext().startActivity(intent);
         }
 
+        // checks allergens for user and highlights in red
         private void checkAllergen() {
             JSONArray allergens = ParseUser.getCurrentUser().getJSONArray("allergens");
-            Log.d("allergens", allergens.toString());
             for (int j = 0; j < allergens.length(); j++) {
                 try {
-                    Log.d("allergens", (ingredients.get(getAdapterPosition()).getName()));
-                    Log.d("allergens", allergens.get(j).toString());
                     if (ingredients.get(getAdapterPosition()).getName().equals(allergens.get(j).toString())){
                         tvIngredient.setTextColor(Color.rgb(255,0,0));
                     }
