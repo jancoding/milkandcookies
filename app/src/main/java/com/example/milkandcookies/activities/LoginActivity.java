@@ -81,11 +81,51 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(etUsername.getText().toString(), etPassword.getText().toString());
             }
         });
-        //BonAPITest();
+        BonAPITest();
     }
 
     // TODO: fix and understand how to query BonAPI
     private void BonAPITest() {
+        // METHOD 2: testing to post to BonAPI
+        final MediaType JSON = MediaType.parse("application/json");
+        OkHttpClient client = new OkHttpClient();
+//        JSONObject main = new JSONObject();
+//        JSONObject jsonObject = new JSONObject();
+//        String[] replacements = new String[1];
+//        replacements[0] = "250gr white wheat flour";
+//        try {
+//            jsonObject.put("ingredients", replacements);
+//            main.put("data", jsonObject);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        RequestBody body = RequestBody.create(JSON, main.toString());
+
+        RequestBody body = RequestBody.create(JSON, "data={ingredients:[\"250gr white wheat flour\", \"50ml cow milk\", \"1 chicken breast\", \"0.5 cups of white rice\"]}");
+        Request request = new Request.Builder()
+                .addHeader("Authorization", "Token 50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7")
+                .addHeader("Content-type", "application/json")
+                .url("https://www.bon-api.com/api/v1/ingredient/alternatives")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    // do something wih the result
+                    Log.d("bonapi", response.body().toString());
+                }
+            }
+        });
+
         // METHOD 1: testing to post to BonAPI
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        StringRequest sr = new StringRequest(Request.Method.POST,"https://www.bon-api.com/api/v1/ingredient/alternatives", new Response.Listener<String>() {
@@ -118,33 +158,6 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        };
 //        queue.add(sr);
-
-        // METHOD 2: testing to post to BonAPI
-        final MediaType JSON = MediaType.parse("application/json");
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(JSON, "{\"ingredients\": [\"250gr white wheat flour\", \"50ml cow milk\", \"1 chicken breast\", \"0.5 cups of white rice\"]}");
-        Request request = new Request.Builder()
-                .addHeader("Authorization", "Token 50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7")
-                .addHeader("Content-type", "application/json")
-                .url("https://www.bon-api.com/api/v1/ingredient/alternatives")
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    // do something wih the result
-                    Log.d("bonapi", response.body().toString());
-                }
-            }
-        });
     }
 
     // goes to sign up activity
