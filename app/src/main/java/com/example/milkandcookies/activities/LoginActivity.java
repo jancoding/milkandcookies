@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button btnSignup;
     private Button btnLogin;
+    private Button btnSearch;
     private EditText etUsername;
     private EditText etPassword;
     private static final String TAG = "LoginActivity";
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         // link view
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
+        btnSearch = findViewById(R.id.btnSearch);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
@@ -81,83 +84,18 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(etUsername.getText().toString(), etPassword.getText().toString());
             }
         });
-        BonAPITest();
-    }
 
-    // TODO: fix and understand how to query BonAPI
-    private void BonAPITest() {
-        // METHOD 2: testing to post to BonAPI
-        final MediaType JSON = MediaType.parse("application/json");
-        OkHttpClient client = new OkHttpClient();
-//        JSONObject main = new JSONObject();
-//        JSONObject jsonObject = new JSONObject();
-//        String[] replacements = new String[1];
-//        replacements[0] = "250gr white wheat flour";
-//        try {
-//            jsonObject.put("ingredients", replacements);
-//            main.put("data", jsonObject);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        RequestBody body = RequestBody.create(JSON, main.toString());
-
-        RequestBody body = RequestBody.create(JSON, "data={ingredients:[\"250gr white wheat flour\", \"50ml cow milk\", \"1 chicken breast\", \"0.5 cups of white rice\"]}");
-        Request request = new Request.Builder()
-                .addHeader("Authorization", "Token 50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7")
-                .addHeader("Content-type", "application/json")
-                .url("https://www.bon-api.com/api/v1/ingredient/alternatives")
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    // do something wih the result
-                    Log.d("bonapi", response.body().toString());
-                }
+            public void onClick(View v) {
+                goSearch();
             }
         });
+    }
 
-        // METHOD 1: testing to post to BonAPI
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        StringRequest sr = new StringRequest(Request.Method.POST,"https://www.bon-api.com/api/v1/ingredient/alternatives", new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("bonapi", response.toString());
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("bonapi error", error.toString());
-//            }
-//        }){
-//            @Override
-//            protected Map<String,String> getParams(){
-//                Map<String,String> params = new HashMap<String, String>();
-//                return params;
-//            }
-//            @Override
-//            public byte[] getBody() throws AuthFailureError {
-//                String body = "{\"ingredients\": ['250gr white wheat flour', '50ml cow milk', '1 chicken breast', '0.5 cups of white rice']}";
-//                return body.getBytes();
-//            }
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String,String> params = new HashMap<String, String>();
-//                params.put("Authorization","50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7");
-//                params.put("Content-Type","application/json");
-//                return params;
-//            }
-//        };
-//        queue.add(sr);
+    private void goSearch() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
     }
 
     // goes to sign up activity

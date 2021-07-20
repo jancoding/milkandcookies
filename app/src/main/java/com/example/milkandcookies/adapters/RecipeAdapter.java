@@ -1,5 +1,6 @@
 package com.example.milkandcookies.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.milkandcookies.Ingredient;
+import com.example.milkandcookies.R;
 import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.activities.DetailActivity;
 import com.example.milkandcookies.activities.ReplaceActivity;
@@ -76,7 +79,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
 
         private void deleteRecipe() {
-            ParseQuery<Recipe> query = ParseQuery.getQuery("Recipe");
             Recipe toRemove =  recipes.get(getAdapterPosition());
             removeIngredients(toRemove);
             recipes.get(getAdapterPosition()).deleteInBackground();
@@ -86,7 +88,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         // requests the Parse database storing ingredients for the recipe
         private void removeIngredients(Recipe recipe) {
-            JSONArray jsonArray = new JSONArray();
             ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
             query.whereEqualTo("recipe", recipe);
             query.addDescendingOrder("createdAt");
@@ -109,12 +110,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             tvRecipe.setText(item.getTitle());
         }
 
-        // transitions to detail view and passes recipe
+        // transitions to detail view, passes recipe, and performs transition
+        //TODO: create smooth transition between fragment and activity
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra("recipe", (Serializable) recipes.get(getAdapterPosition()));
-            context.startActivity(intent);
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation((Activity) context, (View) tvRecipe, "title");
+            context.startActivity(intent, options.toBundle());
         }
     }
 }

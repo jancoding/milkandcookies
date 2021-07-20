@@ -1,5 +1,6 @@
 package com.example.milkandcookies.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
@@ -31,9 +32,11 @@ import java.util.List;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
 
     List<Ingredient> ingredients;
+    boolean original;
 
-    public IngredientAdapter(List<Ingredient> ingredients) {
+    public IngredientAdapter(List<Ingredient> ingredients, boolean original) {
         this.ingredients = ingredients;
+        this.original = original;
     }
 
     @NonNull
@@ -72,7 +75,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
-            tvIngredient.setText(item.getModified());
+            if (original) {
+                tvIngredient.setText(item.getString("display_original"));
+            } else {
+                tvIngredient.setText(item.getString("display_modified"));
+            }
             checkAllergen();
         }
 
@@ -81,7 +88,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         public void onClick(View v) {
             Intent intent = new Intent(itemView.getContext(), ReplaceActivity.class);
             intent.putExtra("ingredient", (Serializable) ingredients.get(getAdapterPosition()));
-            itemView.getContext().startActivity(intent);
+            ((Activity) itemView.getContext()).startActivityForResult(intent, 200);
         }
 
         // checks allergens for user and highlights in red

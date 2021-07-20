@@ -82,7 +82,7 @@ public class RecipeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvIngredients = view.findViewById(R.id.rvIngredients);
         switchUnits = view.findViewById(R.id.switchUnits);
-        ingredientAdapter = new IngredientAdapter(ingredients);
+        ingredientAdapter = new IngredientAdapter(ingredients, this.page == 1);
         tvInstructions = view.findViewById(R.id.tvInstructions);
         tvTitle = view.findViewById(R.id.tvTitle);
         rvIngredients.setAdapter(ingredientAdapter);
@@ -112,7 +112,7 @@ public class RecipeFragment extends Fragment {
     // retrieves metric amounts from the database
     private void getMetric(List<Ingredient> ingredients) {
         for (Ingredient ingredient: ingredients) {
-            ingredient.setModified(ingredient.getMetricAmount() + " " + ingredient.getMetricUnit() + " " + ingredient.getName());
+            ingredient.put("display_original", ingredient.getMetricAmount() + " " + ingredient.getMetricUnit() + " " + ingredient.getName());
             ingredient.saveInBackground();
         }
     }
@@ -120,7 +120,7 @@ public class RecipeFragment extends Fragment {
     // retrieves us amounts from the database
     private void getUS(List<Ingredient> ingredients) {
         for (Ingredient ingredient: ingredients) {
-            ingredient.setModified(ingredient.getOriginal());
+            ingredient.put("display_original", ingredient.getOriginal());
             ingredient.saveInBackground();
         }
     }
@@ -152,6 +152,6 @@ public class RecipeFragment extends Fragment {
     }
 
     private void createModified(View view) {
-
+        switchUnits.setVisibility(View.GONE);
     }
 }

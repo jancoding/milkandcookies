@@ -1,11 +1,17 @@
 package com.example.milkandcookies.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -22,6 +28,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     // recipe that the detail view is displaying
     private Recipe recipe;
+    private ViewPager viewPager;
 
 
     @Override
@@ -55,7 +63,6 @@ public class DetailActivity extends AppCompatActivity {
 
     // requests the Parse database storing ingredients for the recipe
     private void getIngredients() {
-        JSONArray jsonArray = new JSONArray();
         ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
         query.setLimit(30);
         query.whereEqualTo("recipe", recipe);
@@ -72,14 +79,24 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200) {
+            Log.d("testing", "in on activity result");
+            recipe = (Recipe) getIntent().getSerializableExtra("recipe");
+        }
+    }
+
     // sets up the view pager for the detail activity (will be used later for original vs modified ingredients)
     private void setUpViewPager(List<Ingredient> ingredients) {
-        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewpagerDetail);
         viewPager.setAdapter(new DetailFragmentAdapter(getSupportFragmentManager(),
                 DetailActivity.this, ingredients, recipe));
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_detail);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
 }
