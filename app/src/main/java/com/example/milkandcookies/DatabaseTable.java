@@ -1,0 +1,121 @@
+package com.example.milkandcookies;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class DatabaseTable {
+
+    private static final String TAG = "RecipeDatabase";
+    private final DatabaseOpenHelper databaseOpenHelper;
+    public static final String COL_TITLE = "TITLE";
+    public static final String COL_IMAGEURL = "IMAGEURL";
+    public static final String COL_SOURCEURL = "SOURCEURL";
+
+
+    private static final String DATABASE_NAME = "RECIPE";
+    private static final String FTS_VIRTUAL_TABLE = "FTS";
+    private static final int DATABASE_VERSION = 1;
+
+    public DatabaseTable(Context context, JSONObject jsonObject) {
+        databaseOpenHelper = new DatabaseOpenHelper(context);
+        databaseOpenHelper.loadDatabase(jsonObject);
+    }
+
+    private static class DatabaseOpenHelper extends SQLiteOpenHelper {
+
+        private final Context helperContext;
+        private SQLiteDatabase mDatabase;
+
+        private static final String FTS_TABLE_CREATE =
+                "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
+                        " USING fts3 (" +
+                        COL_TITLE + ", " +
+                        COL_SOURCEURL + ", " +
+                        COL_IMAGEURL + ")";
+
+        DatabaseOpenHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            helperContext = context;
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            mDatabase = db;
+            mDatabase.execSQL(FTS_TABLE_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS " + FTS_VIRTUAL_TABLE);
+            onCreate(db);
+        }
+
+        private void loadDatabase(JSONObject jsonObject) {
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        loadRecipes(jsonObject);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();
+        }
+
+        private void loadRecipes(JSONObject jsonObject) throws IOException, JSONException {
+            JSONArray recipesArray = jsonObject.getJSONArray("results");
+            for (int i = 0; i < recipesArray.length(); i++) {
+                JSONObject recipe = recipesArray.getJSONObject(i);
+                addRecipe(recipe.getString("title"), recipe.getString("iamge"), recipe.getString("sourceUrl"));
+            }
+        }
+
+        public long addRecipe(String title, String imageURL, String sourceURL) {
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(COL_TITLE, title);
+            initialValues.put(COL_IMAGEURL, imageURL);
+            initialValues.put(COL_SOURCEURL, sourceURL);
+
+            return mDatabase.insert(FTS_VIRTUAL_TABLE, null, initialValues);
+        }
+    }
+
+    public Cursor getWordMatches(String query, String[] columns) {
+        String selection = COL_TITLE + " MATCH ?";
+        String[] selectionArgs = new String[] {query+"*"};
+
+        return query(selection, selectionArgs, columns);
+    }
+
+    private Cursor query(String selection, String[] selectionArgs, String[] columns) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(FTS_VIRTUAL_TABLE);
+        Cursor cursor = builder.query(databaseOpenHelper.getReadableDatabase(),
+                columns, selection, selectionArgs, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
+    }
+
+}
