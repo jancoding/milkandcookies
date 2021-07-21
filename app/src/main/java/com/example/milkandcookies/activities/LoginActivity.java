@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnSignup;
     private Button btnLogin;
     private Button btnSearch;
+    private Button btnScan;
     private EditText etUsername;
     private EditText etPassword;
     private static final String TAG = "LoginActivity";
@@ -66,8 +67,17 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
         btnSearch = findViewById(R.id.btnSearch);
+        btnScan = findViewById(R.id.btnScan);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+
+        // listener for scan
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goScanActivity();
+            }
+        });
 
         // listener for signup
         btnSignup.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +101,11 @@ public class LoginActivity extends AppCompatActivity {
                 goSearch();
             }
         });
+    }
+
+    private void goScanActivity() {
+        Intent intent = new Intent(this, ScanActivity.class);
+        startActivity(intent);
     }
 
     private void goSearch() {
@@ -126,4 +141,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }

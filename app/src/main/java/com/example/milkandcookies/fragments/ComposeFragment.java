@@ -115,10 +115,11 @@ public class ComposeFragment extends Fragment {
         // creates a new ingredient and adds it to the database
         Ingredient ingredient_parse = new Ingredient();
         try {
-            ingredient_parse.setOriginal(object.getString("originalString"));
-            ingredient_parse.put("display_original", object.getString("originalString"));
-            ingredient_parse.put("display_modified", object.getString("originalString"));
-            ingredient_parse.setName(object.getString("name"));
+            String originalString = object.getString("originalString").replaceAll("[^\\/a-zA-Z0-9\\s+]", "");
+            ingredient_parse.setOriginal(originalString);
+            ingredient_parse.put("display_original", originalString);
+            ingredient_parse.put("display_modified", originalString);
+            ingredient_parse.setName(object.getString("name").replaceAll("[^a-zA-Z0-9\\s+]", ""));
             ingredient_parse.setUSAmount(object.getJSONObject("measures").getJSONObject("us").getDouble("amount"));
             ingredient_parse.setMetricAmount(object.getJSONObject("measures").getJSONObject("metric").getDouble("amount"));
             ingredient_parse.setUSUnit(object.getJSONObject("measures").getJSONObject("us").getString("unitShort") + "");
@@ -170,7 +171,7 @@ public class ComposeFragment extends Fragment {
         try {
             JSONArray steps = object.getJSONArray("analyzedInstructions").getJSONObject(0).getJSONArray("steps");
             for (int i = 0; i < steps.length(); i++) {
-                steps_cleaned.put(steps.getJSONObject(i).getString("step"));
+                steps_cleaned.put(steps.getJSONObject(i).getString("step").replaceAll("[^a-zA-Z0-9\\s+]", ""));
             }
         } catch (JSONException e) {
             e.printStackTrace();
