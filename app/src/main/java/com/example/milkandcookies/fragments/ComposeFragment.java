@@ -1,5 +1,6 @@
 package com.example.milkandcookies.fragments;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -40,6 +42,8 @@ public class ComposeFragment extends Fragment {
     private final String  TAG = "ComposeFragment";
     private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     private ParseObject recipe;
+    ProgressBar pb;
+
 
 
     public ComposeFragment() {
@@ -67,11 +71,15 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+        pb = (ProgressBar) view.findViewById(R.id.pbLoading);
         etURL = view.findViewById(R.id.etURL);
         // listener for submit button to push new recipe to parse database
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pb.setVisibility(ProgressBar.VISIBLE);
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(btnSubmit, "alpha", 0.2f);
+                fadeAnim.start();
                 getRecipe(etURL.getText().toString());
             }
         });
@@ -181,6 +189,7 @@ public class ComposeFragment extends Fragment {
 
     // transitions to the detail activity specifying the recipe
     private void goDetailActivity() {
+        pb.setVisibility(ProgressBar.INVISIBLE);
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("recipe", recipe);
         startActivity(intent);
