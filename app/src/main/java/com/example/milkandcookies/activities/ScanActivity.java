@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -51,39 +52,29 @@ public class ScanActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getProductInformation();
+                goProductActivity();
             }
         });
 
         initialiseDetectorsAndSources();
     }
 
-    private void getProductInformation() {
-        String URL = "https://world.openfoodfacts.org/api/v0/product/" + barcodeText.getText() + ".json";
-        Log.d("getting product information", URL);
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(URL, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Headers headers, JSON json) {
-                Log.d("got information!", json.jsonObject.toString());
-            }
-
-            @Override
-            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d("failed", "big sad " + throwable.toString());
-            }
-        });
-
+    private void goProductActivity() {
+        Intent intent = new Intent(this, ProductActivity.class);
+        intent.putExtra("barcode", barcodeText.getText().toString());
+        startActivity(intent);
     }
 
     private void initialiseDetectorsAndSources() {
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
+
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
+
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -108,12 +99,9 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
-
-
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
@@ -126,7 +114,6 @@ public class ScanActivity extends AppCompatActivity {
                             barcodeText.setText(barcodeData);
                         }
                     });
-
                 }
             }
         });

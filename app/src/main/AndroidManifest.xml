@@ -14,10 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Milkandcookies">
+        <activity android:name=".activities.ProductActivity"></activity>
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
-        <activity android:name=".activities.ScanActivity"></activity>
+
+        <activity android:name=".activities.ScanActivity" />
         <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.ReplaceActivity" />
         <activity android:name=".activities.DetailActivity" />
