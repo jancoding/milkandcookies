@@ -40,7 +40,7 @@ public class ComposeFragment extends Fragment {
     private Button btnSubmit;
     private EditText etURL;
     private final String  TAG = "ComposeFragment";
-    private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+    private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=";
     private ParseObject recipe;
     ProgressBar pb;
 
@@ -88,7 +88,9 @@ public class ComposeFragment extends Fragment {
     // sends get request for spoonacular API to retrieve recipe from website
     public void getRecipe(String url) {
         AsyncHttpClient client = new AsyncHttpClient();
-        String recipeURL = BASE_URL + "&url=" + url + "&analyze=true";
+        StringBuilder urlBuilder = new StringBuilder(BASE_URL);
+        urlBuilder.append(getString(R.string.spoonacular_key)).append("&url=").append(url).append("&analyze=true");
+        String recipeURL = urlBuilder.toString();
         Log.d(TAG, "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override

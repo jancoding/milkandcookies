@@ -46,8 +46,6 @@ public class DetailActivity extends AppCompatActivity {
 
     // tag for log calls
     private final String TAG = "DetailActivity";
-    // url for api calls TODO: replace ID in secrets.xml file
-    private final String BASE_URL = "https://api.spoonacular.com/recipes/extract?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     // recipe that the detail view is displaying
     private Recipe recipe;
     private ViewPager viewPager;

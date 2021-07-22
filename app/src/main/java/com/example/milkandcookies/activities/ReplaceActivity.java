@@ -47,8 +47,7 @@ import static java.net.Proxy.Type.HTTP;
 public class ReplaceActivity extends AppCompatActivity {
 
     private RadioGroup rgOptions;
-    // base url for spoonacular api substitutes TODO: put API key in secrets.xml file
-    private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+    private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=";
     private Ingredient ingredient;
     private final String TAG = "ReplaceActivity";
     private Recipe recipe;
@@ -92,6 +91,7 @@ public class ReplaceActivity extends AppCompatActivity {
     public void getReplacements(Ingredient ingredient) {
         AsyncHttpClient client = new AsyncHttpClient();
         StringBuilder recipeUrl = new StringBuilder(BASE_URL);
+        recipeUrl.append(getString(R.string.spoonacular_key));
         recipeUrl.append("&ingredientName=").append(ingredient.getOriginal());
         Log.d("TAG", "URL is: " + recipeUrl.toString());
         client.get(recipeUrl.toString(), new JsonHttpResponseHandler() {

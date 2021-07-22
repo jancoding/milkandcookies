@@ -19,7 +19,7 @@ import okhttp3.Headers;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+    private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=" + getString(R.string.spoonacular_key);
     private final String TAG = "SearchActivity";
 
     @Override

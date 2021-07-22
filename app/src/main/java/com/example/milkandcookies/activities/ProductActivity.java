@@ -61,7 +61,9 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void getInfoSpoonacular() {
-        String URL = "https://api.spoonacular.com/food/products/upc/" + barcode + "?apiKey=79e84e817f6144358ae1a9057f0bb87a";
+        StringBuilder urlBuilder = new StringBuilder("https://api.spoonacular.com/food/products/upc/");
+        urlBuilder.append(barcode).append("?apiKey=").append(getString(R.string.spoonacular_key));
+        String URL = urlBuilder.toString();
         Log.d("getting product information spoonacular", URL);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(URL, new JsonHttpResponseHandler() {
