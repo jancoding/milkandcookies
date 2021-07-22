@@ -47,7 +47,7 @@ import static java.net.Proxy.Type.HTTP;
 public class ReplaceActivity extends AppCompatActivity {
 
     private RadioGroup rgOptions;
-    // base url for spponacular api substitutes TODO: put API key in secrets.xml file
+    // base url for spoonacular api substitutes TODO: put API key in secrets.xml file
     private final String BASE_URL = "https://api.spoonacular.com/food/ingredients/substitutes?apiKey=79e84e817f6144358ae1a9057f0bb87a";
     private Ingredient ingredient;
     private final String TAG = "ReplaceActivity";
@@ -72,7 +72,9 @@ public class ReplaceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 RadioButton selected = findViewById(rgOptions.getCheckedRadioButtonId());
                 Log.d("in here", selected.getText().toString());
-                ingredient.put("display_modified", ingredient.getString("display_modified") + " (" + selected.getText() + ")");
+                StringBuilder modified = new StringBuilder(ingredient.getString("display_modified"));
+                modified.append(" (").append(selected.getText()).append(")");
+                ingredient.put("display_modified", modified.toString());
                 ingredient.saveInBackground();
                 goRecipeActivity();
             }
@@ -89,17 +91,16 @@ public class ReplaceActivity extends AppCompatActivity {
     // retrieves replacements from spoonacular API
     public void getReplacements(Ingredient ingredient) {
         AsyncHttpClient client = new AsyncHttpClient();
-        String recipeURL = BASE_URL + "&ingredientName=" + ingredient.getOriginal();
-        Log.d("TAG", "URL is: " + recipeURL);
-        client.get(recipeURL, new JsonHttpResponseHandler() {
+        StringBuilder recipeUrl = new StringBuilder(BASE_URL);
+        recipeUrl.append("&ingredientName=").append(ingredient.getOriginal());
+        Log.d("TAG", "URL is: " + recipeUrl.toString());
+        client.get(recipeUrl.toString(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                Log.d(TAG, "successfully grabbed replacements " + json.toString());
                 getReplacementsfromJSON(json);
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d(TAG, "failed : ( " + s + throwable.toString());
             }
         });
     }
@@ -129,62 +130,4 @@ public class ReplaceActivity extends AppCompatActivity {
             rgOptions.addView(rdbtn);
         }
     }
-
-    private void BonAPITest() {
-        final MediaType JSON = MediaType.parse("application/json");
-        OkHttpClient client = new OkHttpClient();
-        Log.d("random", "{\"ingredients\":" + ingredients.toString() + "}");
-        RequestBody body = RequestBody.create(JSON, "{\"ingredients\":" + ingredients.toString() + "}");
-        Request request = new Request.Builder()
-                .addHeader("Authorization", "Token 50b313b1e22fa05eb8512f6f78845d8f5ec8f4b7")
-                .addHeader("Content-type", "application/json")
-                .url("https://www.bon-api.com/api/v1/ingredient/alternatives/?diet=" + ParseUser.getCurrentUser().get("dietary") + "&language=en")
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    processResponse(response.body().string());
-                }
-            }
-        });
-    }
-
-    private void processResponse(String response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1).replace("\\", ""));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void getIngredients() {
-        ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
-        query.setLimit(30);
-        query.whereEqualTo("recipe", recipe);
-        query.addDescendingOrder("createdAt");
-        query.findInBackground(new FindCallback<Ingredient>() {
-            public void done(List<Ingredient> itemList, ParseException e) {
-                if (e == null) {
-                    // Access the array of results here
-                    for (Ingredient ingredient: itemList) {
-                        ingredients.put(ingredient.getString("display_original"));
-                    }
-                    BonAPITest();
-                } else {
-                    Log.d("item", "Error: " + e.getMessage());
-                }
-            }
-        });
-    }
-
 }
