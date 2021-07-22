@@ -102,8 +102,8 @@ public class DatabaseTable {
 
     // gets matches of the query from SQL database
     public Cursor getWordMatches(String query, String[] columns) {
-        String selection = COL_TITLE + " MATCH ?";
-        String[] selectionArgs = new String[] {query+"*"};
+        String selection = COL_TITLE + " LIKE ?";
+        String[] selectionArgs = new String[] {"%" + query + "%"};
         return query(selection, selectionArgs, columns);
     }
 

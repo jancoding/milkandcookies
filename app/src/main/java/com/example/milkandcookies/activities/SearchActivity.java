@@ -56,7 +56,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-                fetchRecipes(query);
+                checkAddedToDatabase(query);
                 return true;
             }
 
@@ -77,7 +77,7 @@ public class SearchActivity extends AppCompatActivity {
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                addToDatabase(json.jsonObject);
+                addToDatabase(json.jsonObject, query);
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
@@ -86,13 +86,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     // adds new recipes to the database
-    private void addToDatabase(JSONObject jsonObject) {
+    private void addToDatabase(JSONObject jsonObject, String query) {
         db.loadMoreRecipes(jsonObject);
-        checkAddedToDatabase();
     }
 
-    // temporary check to determine what the database contains
-    private void checkAddedToDatabase() {
-        Cursor c = db.getWordMatches("Pasta with Tuna", null);
+    //  check to determine if database contains recipes or we need to retrieve ones
+    private void checkAddedToDatabase(String query) {
+        Cursor c = db.getWordMatches(query, null);
+        if (c == null) {
+            fetchRecipes(query);
+        } else {
+            Log.d(TAG, c.getCount() + "");
+            while (c.moveToNext()) {
+                Log.d(TAG, c.getString(c.getColumnIndex("TITLE")));
+            }
+        }
     }
 }
