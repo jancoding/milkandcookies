@@ -75,11 +75,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
-            if (original) {
-                tvIngredient.setText(item.getString("display_original"));
-            } else {
-                tvIngredient.setText(item.getString("display_modified"));
-            }
+            String text = original ? item.getString("display_original") : item.getString("display_modified");
+            tvIngredient.setText(text);
             checkAllergen();
         }
 
