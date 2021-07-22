@@ -17,7 +17,9 @@ import android.widget.Toast;
 //import com.android.volley.VolleyError;
 //import com.android.volley.toolbox.StringRequest;
 //import com.android.volley.toolbox.Volley;
+import com.example.milkandcookies.DatabaseTable;
 import com.example.milkandcookies.Ingredient;
+import com.example.milkandcookies.ParseApplication;
 import com.example.milkandcookies.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         // login persistence between app uses
         if (ParseUser.getCurrentUser() != null) {

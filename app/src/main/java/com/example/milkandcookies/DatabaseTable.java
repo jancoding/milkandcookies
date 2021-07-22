@@ -20,7 +20,7 @@ import java.io.InputStream;
 public class DatabaseTable {
 
     private static final String TAG = "RecipeDatabase";
-    private final DatabaseOpenHelper databaseOpenHelper;
+    public final DatabaseOpenHelper databaseOpenHelper;
     public static final String COL_TITLE = "TITLE";
     public static final String COL_IMAGEURL = "IMAGEURL";
     public static final String COL_SOURCEURL = "SOURCEURL";
@@ -30,8 +30,12 @@ public class DatabaseTable {
     private static final String FTS_VIRTUAL_TABLE = "FTS";
     private static final int DATABASE_VERSION = 1;
 
-    public DatabaseTable(Context context, JSONObject jsonObject) {
+    public DatabaseTable(Context context) {
+        Log.d(TAG, "constructor of database table");
         databaseOpenHelper = new DatabaseOpenHelper(context);
+    }
+
+    public void loadMoreRecipes(JSONObject jsonObject) {
         databaseOpenHelper.loadDatabase(jsonObject);
     }
 
@@ -50,10 +54,14 @@ public class DatabaseTable {
         DatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             helperContext = context;
+            Log.d(TAG, "constructor of DatabaseOpen Helper");
+            mDatabase = getWritableDatabase();
+//            mDatabase.execSQL(FTS_TABLE_CREATE);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            Log.d(TAG, "on create method of database open helper");
             mDatabase = db;
             mDatabase.execSQL(FTS_TABLE_CREATE);
         }
@@ -66,7 +74,7 @@ public class DatabaseTable {
             onCreate(db);
         }
 
-        private void loadDatabase(JSONObject jsonObject) {
+        public void loadDatabase(JSONObject jsonObject) {
             new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -82,7 +90,7 @@ public class DatabaseTable {
             JSONArray recipesArray = jsonObject.getJSONArray("results");
             for (int i = 0; i < recipesArray.length(); i++) {
                 JSONObject recipe = recipesArray.getJSONObject(i);
-                addRecipe(recipe.getString("title"), recipe.getString("iamge"), recipe.getString("sourceUrl"));
+                addRecipe(recipe.getString("title"), recipe.getString("image"), recipe.getString("sourceUrl"));
             }
         }
 
@@ -91,7 +99,7 @@ public class DatabaseTable {
             initialValues.put(COL_TITLE, title);
             initialValues.put(COL_IMAGEURL, imageURL);
             initialValues.put(COL_SOURCEURL, sourceURL);
-
+            Log.d(TAG, "adding a recipe with " + title + " " + imageURL + " " + sourceURL);
             return mDatabase.insert(FTS_VIRTUAL_TABLE, null, initialValues);
         }
     }

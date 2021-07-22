@@ -19,5 +19,16 @@ public class ParseApplication extends Application {
                 .build()
         );
     }
+
+    private DatabaseTable db;
+
+    public void setDb(DatabaseTable db) {
+        this.db = db;
+    }
+
+    public DatabaseTable getDb() {
+        return this.db;
+    }
+
 }
 
