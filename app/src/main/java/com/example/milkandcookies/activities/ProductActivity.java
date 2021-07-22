@@ -41,7 +41,6 @@ public class ProductActivity extends AppCompatActivity {
 
     private void getInfoWorldOpenFood() {
         String URL = "https://world.openfoodfacts.org/api/v0/product/" + barcode + ".json";
-        Log.d("getting product information world open food facts", URL);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(URL, new JsonHttpResponseHandler() {
             @Override
@@ -51,7 +50,7 @@ public class ProductActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d("failed", "big sad " + throwable.toString());
+                Log.d("failed", "error: " + throwable.toString());
             }
         });
     }
@@ -64,7 +63,6 @@ public class ProductActivity extends AppCompatActivity {
         StringBuilder urlBuilder = new StringBuilder("https://api.spoonacular.com/food/products/upc/");
         urlBuilder.append(barcode).append("?apiKey=").append(getString(R.string.spoonacular_key));
         String URL = urlBuilder.toString();
-        Log.d("getting product information spoonacular", URL);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(URL, new JsonHttpResponseHandler() {
             @Override
@@ -74,7 +72,7 @@ public class ProductActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d("failed", "big sad " + throwable.toString());
+                Log.d("failed", "error: " + throwable.toString());
             }
         });
 

@@ -70,7 +70,6 @@ public class ReplaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RadioButton selected = findViewById(rgOptions.getCheckedRadioButtonId());
-                Log.d("in here", selected.getText().toString());
                 StringBuilder modified = new StringBuilder(ingredient.getString("display_modified"));
                 modified.append(" (").append(selected.getText()).append(")");
                 ingredient.put("display_modified", modified.toString());
@@ -93,7 +92,6 @@ public class ReplaceActivity extends AppCompatActivity {
         StringBuilder recipeUrl = new StringBuilder(BASE_URL);
         recipeUrl.append(getString(R.string.spoonacular_key));
         recipeUrl.append("&ingredientName=").append(ingredient.getOriginal());
-        Log.d("TAG", "URL is: " + recipeUrl.toString());
         client.get(recipeUrl.toString(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {

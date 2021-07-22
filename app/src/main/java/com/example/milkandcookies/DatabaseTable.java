@@ -31,7 +31,6 @@ public class DatabaseTable {
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseTable(Context context) {
-        Log.d(TAG, "constructor of database table");
         databaseOpenHelper = new DatabaseOpenHelper(context);
     }
 
@@ -54,26 +53,22 @@ public class DatabaseTable {
         DatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             helperContext = context;
-            Log.d(TAG, "constructor of DatabaseOpen Helper");
             mDatabase = getWritableDatabase();
-//            mDatabase.execSQL(FTS_TABLE_CREATE);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Log.d(TAG, "on create method of database open helper");
             mDatabase = db;
             mDatabase.execSQL(FTS_TABLE_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS " + FTS_VIRTUAL_TABLE);
             onCreate(db);
         }
 
+        // starts a new thread to input items into a database
         public void loadDatabase(JSONObject jsonObject) {
             new Thread(new Runnable() {
                 public void run() {
@@ -86,6 +81,7 @@ public class DatabaseTable {
             }).start();
         }
 
+        // parses json from spoonacular to get information to add to database
         private void loadRecipes(JSONObject jsonObject) throws IOException, JSONException {
             JSONArray recipesArray = jsonObject.getJSONArray("results");
             for (int i = 0; i < recipesArray.length(); i++) {
@@ -94,29 +90,29 @@ public class DatabaseTable {
             }
         }
 
+        // adds a new recipe row to the database
         public long addRecipe(String title, String imageURL, String sourceURL) {
             ContentValues initialValues = new ContentValues();
             initialValues.put(COL_TITLE, title);
             initialValues.put(COL_IMAGEURL, imageURL);
             initialValues.put(COL_SOURCEURL, sourceURL);
-            Log.d(TAG, "adding a recipe with " + title + " " + imageURL + " " + sourceURL);
             return mDatabase.insert(FTS_VIRTUAL_TABLE, null, initialValues);
         }
     }
 
+    // gets matches of the query from SQL database
     public Cursor getWordMatches(String query, String[] columns) {
         String selection = COL_TITLE + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
-
         return query(selection, selectionArgs, columns);
     }
 
+    // constructs and executes sql query and returns cursor with matching rows
     private Cursor query(String selection, String[] selectionArgs, String[] columns) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(FTS_VIRTUAL_TABLE);
         Cursor cursor = builder.query(databaseOpenHelper.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
-
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {

@@ -91,7 +91,6 @@ public class ComposeFragment extends Fragment {
         StringBuilder urlBuilder = new StringBuilder(BASE_URL);
         urlBuilder.append(getString(R.string.spoonacular_key)).append("&url=").append(url).append("&analyze=true");
         String recipeURL = urlBuilder.toString();
-        Log.d(TAG, "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {

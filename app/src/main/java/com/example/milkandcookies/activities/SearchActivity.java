@@ -37,11 +37,7 @@ public class SearchActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tbSearch);
         setSupportActionBar(toolbar);
-        Log.d(TAG, "onCreate of SearchActivity");
         db = new DatabaseTable(this);
-
-
-//        ((ParseApplication) this.getApplication()).setDb(new DatabaseTable(this));
     }
 
     @Override
@@ -72,32 +68,31 @@ public class SearchActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // fetches recipes matching a query from spoonacular
     private void fetchRecipes(String query) {
         AsyncHttpClient client = new AsyncHttpClient();
         StringBuilder urlBuilder = new StringBuilder(BASE_URL);
         urlBuilder.append(getString(R.string.spoonacular_key)).append("&query=").append(query).append("&addRecipeInformation=true");
         String recipeURL = urlBuilder.toString();
-        Log.d(TAG, "URL is: " + recipeURL);
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                Log.d(TAG, "successfully grabbed recipes " + json.toString());
                 addToDatabase(json.jsonObject);
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d(TAG, "failed : ( " + s + throwable.toString());
             }
         });
     }
 
+    // adds new recipes to the database
     private void addToDatabase(JSONObject jsonObject) {
         db.loadMoreRecipes(jsonObject);
         checkAddedToDatabase();
     }
 
+    // temporary check to determine what the database contains
     private void checkAddedToDatabase() {
         Cursor c = db.getWordMatches("Pasta with Tuna", null);
-        Log.d("SearchActivity", c.getCount() + " is rows received");
     }
 }

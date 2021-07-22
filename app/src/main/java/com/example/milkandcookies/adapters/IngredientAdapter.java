@@ -90,12 +90,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
         // checks allergens for user and highlights in red
         private void checkAllergen() {
-//            Log.d("allergen", "checking allergens");
             JSONArray allergens = ParseUser.getCurrentUser().getJSONArray("allergens");
             for (int j = 0; j < allergens.length(); j++) {
                 try {
-//                    Log.d("allergen in", ingredients.get(getAdapterPosition()).getName());
-//                    Log.d("allergen actual", allergens.get(j).toString());
                     if (ingredients.get(getAdapterPosition()).getName().equals(allergens.get(j).toString())){
                         tvIngredient.setTextColor(Color.rgb(255,0,0));
                         return;
