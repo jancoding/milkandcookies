@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button btnSignup;
     private Button btnLogin;
-    private Button btnSearch;
     private Button btnScan;
     private EditText etUsername;
     private EditText etPassword;
@@ -69,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
         // link view
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
-        btnSearch = findViewById(R.id.btnSearch);
         btnScan = findViewById(R.id.btnScan);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -98,12 +96,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goSearch();
-            }
-        });
+
     }
 
     private void goScanActivity() {
@@ -111,10 +104,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goSearch() {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-    }
 
     // goes to sign up activity
     private void goSignUp() {

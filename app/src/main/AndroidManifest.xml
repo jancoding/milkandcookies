@@ -21,7 +21,6 @@
             android:value="barcode" />
 
         <activity android:name=".activities.ScanActivity" />
-        <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.ReplaceActivity" />
         <activity android:name=".activities.DetailActivity" />
         <activity android:name=".activities.FeedActivity" />
