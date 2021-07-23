@@ -5,15 +5,26 @@
         android:id="@+id/home"
         android:enabled="true"
         android:icon="@drawable/home"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:title="Home" />
     <item
         android:id="@+id/new_recipe"
         android:enabled="true"
         android:icon="@drawable/new_recipe"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:title="New"
+        />
     <item
         android:id="@+id/profile"
         android:enabled="true"
         android:icon="@drawable/profile"
+        android:title="Profile"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
         app:showAsAction="ifRoom" />
 </menu>

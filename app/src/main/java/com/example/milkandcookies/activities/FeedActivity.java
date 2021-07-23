@@ -1,6 +1,7 @@
 package com.example.milkandcookies.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.fragments.ComposeFragment;
 import com.example.milkandcookies.fragments.HomeFragment;
+import com.example.milkandcookies.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
@@ -34,7 +36,7 @@ public class FeedActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flFragment, new HomeFragment()).commit();
 
-        // loads teh correct fragment based on bottom navigation view selected
+        // loads the correct fragment based on bottom navigation view selected
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -46,6 +48,10 @@ public class FeedActivity extends AppCompatActivity {
                         break;
                     case R.id.new_recipe:
                         fragment = new ComposeFragment();
+                        fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
+                        break;
+                    case R.id.search:
+                        fragment = new SearchFragment();
                         fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
                         break;
                     case R.id.profile:
