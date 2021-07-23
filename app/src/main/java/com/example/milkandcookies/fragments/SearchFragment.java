@@ -23,9 +23,15 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.milkandcookies.DatabaseTable;
 import com.example.milkandcookies.R;
+import com.example.milkandcookies.Recipe;
+import com.example.milkandcookies.RecipeSearch;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import okhttp3.Headers;
 
@@ -39,6 +45,7 @@ public class SearchFragment extends Fragment {
     private DatabaseTable db;
     private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
     private final String TAG = "SearchFragment";
+    private ArrayList<RecipeSearch> recipesToDisplay;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -54,6 +61,7 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseTable(getContext());
+        recipesToDisplay = new ArrayList<>();
 
     }
 
@@ -106,10 +114,17 @@ public class SearchFragment extends Fragment {
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                addToDatabase(json.jsonObject, query);
+                JSONObject response = json.jsonObject;
+                addToDatabase(response, query);
+                try {
+                    recipesToDisplay.addAll(createRecipeSearchFromJSON(response));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+                Log.d(TAG, "failed to fetch recipes");
             }
         });
     }
@@ -125,11 +140,35 @@ public class SearchFragment extends Fragment {
         if (c == null) {
             fetchRecipes(query);
         } else {
-            Log.d(TAG, c.getCount() + "");
-            while (c.moveToNext()) {
-                Log.d(TAG, c.getString(c.getColumnIndex("TITLE")));
-            }
+            recipesToDisplay.addAll(createRecipeSearchFromCursor(c));
         }
     }
+
+    private ArrayList<RecipeSearch> createRecipeSearchFromCursor(Cursor c) {
+        ArrayList<RecipeSearch> toReturn = new ArrayList<RecipeSearch>();
+        while (c.moveToNext()) {
+            String title = c.getString(c.getColumnIndex("TITLE"));
+            String sourceUrl = c.getString(c.getColumnIndex("SOURCEURL"));
+            String imageUrl = c.getString(c.getColumnIndex("IMAGEURL"));
+            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title);
+            toReturn.add(recipeSearch);
+        }
+        return toReturn;
+    }
+
+    private ArrayList<RecipeSearch> createRecipeSearchFromJSON(JSONObject jsonObject) throws JSONException {
+        ArrayList<RecipeSearch> toReturn = new ArrayList<RecipeSearch>();
+        JSONArray results = jsonObject.getJSONArray("results");
+        for (int i = 0; i < results.length(); i++) {
+            String title = results.getJSONObject(i).getString("title");
+            String sourceUrl = results.getJSONObject(i).getString("sourceUrl");
+            String imageUrl = results.getJSONObject(i).getString("image");
+            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title);
+            toReturn.add(recipeSearch);
+        }
+        return toReturn;
+    }
+
+
 
 }
