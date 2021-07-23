@@ -1,15 +1,29 @@
 package com.example.milkandcookies.adapters;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.milkandcookies.Recipe;
+import com.example.milkandcookies.RecipeSearch;
+
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeSearchAdapter extends RecyclerView.Adapter<RecipeSearchAdapter.ViewHolder> {
 
+    private ArrayList<RecipeSearch> recipesToDisplay;
+    private Context context;
+
+    public RecipeSearchAdapter(Context context, ArrayList<RecipeSearch> recipes) {
+        this.context = context;
+        this.recipesToDisplay = recipes;
+    }
 
     @NonNull
     @NotNull

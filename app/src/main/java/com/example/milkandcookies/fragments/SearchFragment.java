@@ -144,6 +144,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    // creates RecipeSearch objects from Cursor results
     private ArrayList<RecipeSearch> createRecipeSearchFromCursor(Cursor c) {
         ArrayList<RecipeSearch> toReturn = new ArrayList<RecipeSearch>();
         while (c.moveToNext()) {
@@ -156,6 +157,7 @@ public class SearchFragment extends Fragment {
         return toReturn;
     }
 
+    // creates RecipeSearch objects from JSON results
     private ArrayList<RecipeSearch> createRecipeSearchFromJSON(JSONObject jsonObject) throws JSONException {
         ArrayList<RecipeSearch> toReturn = new ArrayList<RecipeSearch>();
         JSONArray results = jsonObject.getJSONArray("results");
