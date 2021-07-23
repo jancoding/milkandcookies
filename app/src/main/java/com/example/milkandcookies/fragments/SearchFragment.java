@@ -10,6 +10,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ import com.example.milkandcookies.DatabaseTable;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.RecipeSearch;
+import com.example.milkandcookies.adapters.RecipeAdapter;
+import com.example.milkandcookies.adapters.RecipeSearchAdapter;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -46,6 +50,8 @@ public class SearchFragment extends Fragment {
     private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
     private final String TAG = "SearchFragment";
     private ArrayList<RecipeSearch> recipesToDisplay;
+    protected RecyclerView rvSearchRecipes;
+    private RecipeSearchAdapter rAdapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -69,7 +75,10 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-
+        rvSearchRecipes = view.findViewById(R.id.rvSearchRecipe);
+        rAdapter = new RecipeSearchAdapter(getContext(), recipesToDisplay);
+        rvSearchRecipes.setAdapter(rAdapter);
+        rvSearchRecipes.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -118,6 +127,7 @@ public class SearchFragment extends Fragment {
                 addToDatabase(response, query);
                 try {
                     recipesToDisplay.addAll(createRecipeSearchFromJSON(response));
+                    rAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,6 +151,7 @@ public class SearchFragment extends Fragment {
             fetchRecipes(query);
         } else {
             recipesToDisplay.addAll(createRecipeSearchFromCursor(c));
+            rAdapter.notifyDataSetChanged();
         }
     }
 
