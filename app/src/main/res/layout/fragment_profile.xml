@@ -33,7 +33,7 @@
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                tools:srcCompat="@drawable/ic_vector_person" />
+                tools:src="@drawable/ic_vector_person" />
 
             <TextView
                 android:id="@+id/tvFullName"
@@ -58,6 +58,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:padding="10dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
         android:id="@+id/details">
@@ -82,6 +83,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvNumRecipes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -102,6 +104,7 @@
                 android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvAllergens"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -120,6 +123,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvDietary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -138,6 +142,7 @@
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFavorites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
