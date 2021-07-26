@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ProductActivity">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewGraph"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp">
+
+
+        <!--Linear layout to display pie chart -->
+        <!-- and details of pie chart-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                tools:srcCompat="@drawable/ic_vector_person" />
+
+            <TextView
+                android:id="@+id/tvFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/ivProfile"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="45dp"
+                android:text="Janvi Shah" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardViewGraph"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/details">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="NUMBER OF RECIPES"
+                    android:textColor="@color/salmon"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="56"
+                    android:textSize="35dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="ALLERGENS"
+                android:textColor="@color/salmon"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="eggs, walnuts, pecans"
+                    android:textSize="35dp"
+                    android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="DIETARY PREFRENCES"
+                android:textColor="@color/salmon"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="gluten free, vegetarian"
+                android:textSize="35dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="FAVORITES"
+                android:textColor="@color/salmon"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

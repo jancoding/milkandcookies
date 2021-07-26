@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.fragments.ComposeFragment;
 import com.example.milkandcookies.fragments.HomeFragment;
+import com.example.milkandcookies.fragments.ProfileFragment;
 import com.example.milkandcookies.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
@@ -55,7 +56,9 @@ public class FeedActivity extends AppCompatActivity {
                         fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
                         break;
                     case R.id.profile:
-                        // TODO: add once profile fragment is created
+                        fragment = new ProfileFragment();
+                        fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
+                        break;
                     default:
                         break;
                 }
