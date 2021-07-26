@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.milkandcookies.Ingredient;
@@ -46,7 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View recipeView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_activated_1, parent, false);
+        View recipeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe, parent, false);
         // wrap it inside a View Holder and return it
         return new ViewHolder(recipeView);
     }
@@ -64,10 +66,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvRecipe;
+        ImageView ivHeart;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvRecipe = itemView.findViewById(android.R.id.text1);
+            tvRecipe = itemView.findViewById(R.id.tvTitle);
+            ivHeart = itemView.findViewById(R.id.ivHeart);
+            ivHeart.setColorFilter(ContextCompat.getColor(context, R.color.medium_red), android.graphics.PorterDuff.Mode.SRC_IN);
+
+
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -76,6 +83,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     return true;
                 }
             });
+
+            ivHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean isFavorited = recipes.get(getAdapterPosition()).getBoolean("favorite");
+                    int imageID = isFavorited ? R.drawable.ufi_heart : R.drawable.ufi_heart_active;
+                    ivHeart.setImageResource(imageID);
+                    favoriteInDatabase(recipes.get(getAdapterPosition()), isFavorited);
+                }
+            });
+        }
+
+        private void favoriteInDatabase(Recipe recipe, boolean isFavorited) {
+            recipe.put("favorite", !isFavorited);
+            recipe.saveInBackground();
         }
 
         private void deleteRecipe() {
