@@ -40,6 +40,15 @@
                 android:layout_toRightOf="@+id/ivRecipeImage"
                 android:layout_marginTop="30dp"/>
 
+            <ImageView
+                android:id="@+id/ivAddRecipe"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                app:srcCompat="@drawable/new_recipe" />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
