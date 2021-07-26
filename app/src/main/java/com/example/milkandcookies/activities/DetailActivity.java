@@ -20,6 +20,7 @@ import com.example.milkandcookies.Ingredient;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.adapters.DetailFragmentAdapter;
+import com.example.milkandcookies.fragments.RecipeFragment;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.FindCallback;
@@ -86,6 +87,7 @@ public class DetailActivity extends AppCompatActivity {
             recipe = (Recipe) getIntent().getSerializableExtra("recipe");
         }
     }
+
 
     // sets up the view pager for the detail activity (will be used later for original vs modified ingredients)
     private void setUpViewPager(List<Ingredient> ingredients) {

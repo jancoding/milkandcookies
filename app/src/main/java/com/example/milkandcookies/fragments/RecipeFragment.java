@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class RecipeFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -108,6 +110,7 @@ public class RecipeFragment extends Fragment {
         // determines whether the view should be original or modified
         setUpPage(view);
     }
+
 
     // retrieves metric amounts from the database
     private void getMetric(List<Ingredient> ingredients) {
