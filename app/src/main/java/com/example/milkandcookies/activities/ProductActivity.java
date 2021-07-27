@@ -15,6 +15,7 @@ import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import okhttp3.Headers;
 
@@ -25,6 +26,7 @@ public class ProductActivity extends AppCompatActivity {
     private double percentFat;
     private double percentCarbs;
     private TextView tvIngredients;
+    private TextView tvTitle;
     PieChart pieChart;
 
     @Override
@@ -34,28 +36,9 @@ public class ProductActivity extends AppCompatActivity {
         barcode = getIntent().getStringExtra("barcode");
         pieChart = findViewById(R.id.piechart);
         tvIngredients = findViewById(R.id.tvIngredients);
+        tvTitle = findViewById(R.id.tvTitle);
+
         getInfoSpoonacular();
-
-    }
-
-
-    private void getInfoWorldOpenFood() {
-        String URL = "https://world.openfoodfacts.org/api/v0/product/" + barcode + ".json";
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(URL, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Headers headers, JSON json) {
-                Log.d("got information!", json.jsonObject.toString());
-            }
-
-            @Override
-            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
-                Log.d("failed", "error: " + throwable.toString());
-            }
-        });
-    }
-
-    private void parseInfoWorldOpenFood() {
 
     }
 
@@ -86,6 +69,7 @@ public class ProductActivity extends AppCompatActivity {
             percentFat = caloricBreakdown.getDouble("percentFat");
             percentCarbs = caloricBreakdown.getDouble("percentCarbs");
             tvIngredients.setText(jsonObject.getString("ingredientList"));
+            tvTitle.setText(jsonObject.getString("title"));
             createPieChart();
         } catch (JSONException e) {
             e.printStackTrace();

@@ -75,16 +75,25 @@
         android:layout_marginLeft="10dp"
         android:background="@android:color/darker_gray"/>
 
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_below="@+id/tvOR"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvOR"
+        android:layout_below="@id/sign_in_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@color/salmon"
         android:text="Sign Up"
     />
+
 
     <Button
         android:id="@+id/btnScan"
