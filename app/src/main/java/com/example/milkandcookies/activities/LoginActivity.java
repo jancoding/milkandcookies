@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private static final String TAG = "LoginActivity";
-    private GoogleSignInClient mGoogleSignInClient;
+    public GoogleSignInClient mGoogleSignInClient;
     private SignInButton googleSignIn;
     private static final int RC_SIGN_IN = 200;
 
@@ -124,18 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            Log.d(TAG, "User is already signed in");
-            goSignUp();
-        }
-    }
-
     private void goScanActivity() {
         Intent intent = new Intent(this, ScanActivity.class);
         startActivity(intent);
@@ -188,13 +176,28 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // Signed in successfully, show authenticated UI.
-            goSignUp();
+            // Based on first time signing in decide activity to load
+            firstTime(account);
+
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             Toast.makeText(this, "Sign-In Failed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // checks if google user has entered preliminary milkandcookies information before
+    private void firstTime(GoogleSignInAccount account) {
+        ParseUser.logInInBackground(account.getEmail(), account.getId(), new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e == null) {
+                    goFeedActivity();
+                } else {
+                    goSignUp();
+                }
+            }
+        });
     }
 }

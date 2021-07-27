@@ -15,6 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.milkandcookies.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -67,6 +69,16 @@ public class SignupActivity extends AppCompatActivity {
                 addEditText();
             }
         });
+
+
+        // fill out preliminary information if there is already a google sign in
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            etFullName.setText(acct.getGivenName());
+            etUsername.setText(acct.getEmail());
+            etEmail.setText(acct.getEmail());
+            etPassword.setText(acct.getId());
+        }
     }
 
     // creates a new user with filled in fields in parse

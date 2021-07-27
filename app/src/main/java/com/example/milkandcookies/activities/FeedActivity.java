@@ -17,6 +17,8 @@ import com.example.milkandcookies.fragments.ComposeFragment;
 import com.example.milkandcookies.fragments.HomeFragment;
 import com.example.milkandcookies.fragments.ProfileFragment;
 import com.example.milkandcookies.fragments.SearchFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
