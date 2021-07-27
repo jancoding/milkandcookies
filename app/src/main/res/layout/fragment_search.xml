@@ -6,11 +6,21 @@
     android:layout_height="match_parent"
   >
 
+    <Button
+        android:id="@+id/btnAdvanced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Advanced Search Preferences"
+        android:background="@color/salmon"
+    />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchRecipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/btnAdvanced"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="-1dp" />
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

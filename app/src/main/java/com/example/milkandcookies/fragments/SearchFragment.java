@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -52,6 +54,7 @@ public class SearchFragment extends Fragment {
     private ArrayList<RecipeSearch> recipesToDisplay;
     protected RecyclerView rvSearchRecipes;
     private RecipeSearchAdapter rAdapter;
+    private Button btnAdvanced;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -76,9 +79,23 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         rvSearchRecipes = view.findViewById(R.id.rvSearchRecipe);
+        btnAdvanced = view.findViewById(R.id.btnAdvanced);
         rAdapter = new RecipeSearchAdapter(getContext(), recipesToDisplay);
         rvSearchRecipes.setAdapter(rAdapter);
         rvSearchRecipes.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnAdvanced.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPreferences();
+            }
+        });
+    }
+
+    private void showPreferences() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        PreferencesFragment preferencesFragment = PreferencesFragment.newInstance();
+        preferencesFragment.show(fm, "fragment_edit_tweet");
     }
 
     @Override
