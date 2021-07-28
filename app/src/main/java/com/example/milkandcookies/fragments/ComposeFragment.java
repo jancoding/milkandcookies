@@ -96,7 +96,7 @@ public class ComposeFragment extends Fragment {
         client.get(recipeURL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                Log.d(TAG, "succesful in retrieval, data is: " + json);
+                Log.d(TAG, "successful in retrieval, data is: " + json);
                 pushNewRecipe(json);
             }
             @Override
@@ -182,7 +182,7 @@ public class ComposeFragment extends Fragment {
         try {
             JSONArray steps = object.getJSONArray("analyzedInstructions").getJSONObject(0).getJSONArray("steps");
             for (int i = 0; i < steps.length(); i++) {
-                steps_cleaned.put(steps.getJSONObject(i).getString("step").replaceAll("[^a-zA-Z0-9\\s+]", ""));
+                steps_cleaned.put(steps.getJSONObject(i).getString("step"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
