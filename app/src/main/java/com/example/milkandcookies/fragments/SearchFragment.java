@@ -145,6 +145,7 @@ public class SearchFragment extends Fragment {
                 try {
                     recipesToDisplay.addAll(createRecipeSearchFromJSON(response));
                     rAdapter.notifyDataSetChanged();
+                    rvSearchRecipes.scheduleLayoutAnimation();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -169,6 +170,7 @@ public class SearchFragment extends Fragment {
         } else {
             recipesToDisplay.addAll(createRecipeSearchFromCursor(c));
             rAdapter.notifyDataSetChanged();
+            rvSearchRecipes.scheduleLayoutAnimation();
         }
     }
 

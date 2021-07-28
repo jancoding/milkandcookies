@@ -133,14 +133,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
 
         // transitions to detail view, passes recipe, and performs transition
-        //TODO: create smooth transition between fragment and activity
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra("recipe", (Serializable) recipes.get(getAdapterPosition()));
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation((Activity) context, (View) tvRecipe, "title");
-            context.startActivity(intent, options.toBundle());
+            context.startActivity(intent);
         }
     }
 }

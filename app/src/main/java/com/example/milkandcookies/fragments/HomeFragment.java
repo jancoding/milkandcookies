@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment {
                     recipes.clear();
                     recipes.addAll(itemList);
                     rAdapter.notifyDataSetChanged();
+                    rvRecipes.scheduleLayoutAnimation();
                 } else {
                     Log.d("item", "Error: " + e.getMessage());
                 }
