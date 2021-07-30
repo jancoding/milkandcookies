@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.fragments.ComposeFragment;
 import com.example.milkandcookies.fragments.HomeFragment;
+import com.example.milkandcookies.fragments.IdentifyFragment;
 import com.example.milkandcookies.fragments.ProfileFragment;
 import com.example.milkandcookies.fragments.SearchFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,6 +60,10 @@ public class FeedActivity extends AppCompatActivity {
                         break;
                     case R.id.profile:
                         fragment = new ProfileFragment();
+                        fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
+                        break;
+                    case R.id.scan:
+                        fragment = new IdentifyFragment();
                         fragmentManager.beginTransaction().replace(R.id.flFragment, fragment).commit();
                         break;
                     default:

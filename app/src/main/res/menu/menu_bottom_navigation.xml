@@ -27,4 +27,11 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/scan"
+        android:enabled="true"
+        android:icon="@drawable/scan"
+        android:title="Search"
+        app:showAsAction="ifRoom" />
 </menu>
