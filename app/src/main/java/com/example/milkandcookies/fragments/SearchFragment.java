@@ -46,7 +46,7 @@ import okhttp3.Headers;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements  PreferencesFragment.PreferencesDialogListener {
 
     private DatabaseTable db;
     private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
@@ -164,10 +164,13 @@ public class SearchFragment extends Fragment {
 
     //  check to determine if database contains recipes or we need to retrieve ones
     private void checkAddedToDatabase(String query) {
-        Cursor c = db.getWordMatches(query, null);
-        if (c == null) {
+
+        if (db.checkWordMatches(query)) {
+            Log.d("DEBUG", "Could not find matches in database");
             fetchRecipes(query);
         } else {
+            Log.d("DEBUG", "Could  find matches in database");
+            Cursor c = db.getWordMatches(query, null);
             recipesToDisplay.addAll(createRecipeSearchFromCursor(c));
             rAdapter.notifyDataSetChanged();
             rvSearchRecipes.scheduleLayoutAnimation();
@@ -202,5 +205,8 @@ public class SearchFragment extends Fragment {
     }
 
 
-
+    @Override
+    public void onFinishPreferenceSelection(String preference) {
+        // take selection when performing queriess
+    }
 }

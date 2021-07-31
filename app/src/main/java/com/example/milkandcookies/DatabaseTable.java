@@ -107,6 +107,18 @@ public class DatabaseTable {
         return query(selection, selectionArgs, columns);
     }
 
+    public boolean checkWordMatches(String query) {
+        String[] selectionArgs = new String[] {"%" + query + "%"};
+        // TODO: need to use StringBuilder for this
+        String selection = "SELECT EXISTS (SELECT * FROM " + FTS_VIRTUAL_TABLE + " WHERE " + COL_TITLE + " LIKE ? LIMIT 1)";
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(FTS_VIRTUAL_TABLE);
+        Cursor cursor = builder.query(databaseOpenHelper.getReadableDatabase(),
+                null, selection, selectionArgs, null, null, null);
+        Log.d("DEBUG", "found this many matches " + cursor.getCount());
+        return cursor.getCount() == 0;
+    }
+
     // constructs and executes sql query and returns cursor with matching rows
     private Cursor query(String selection, String[] selectionArgs, String[] columns) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();

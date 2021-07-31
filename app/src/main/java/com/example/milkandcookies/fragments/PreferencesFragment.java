@@ -1,16 +1,24 @@
 package com.example.milkandcookies.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.milkandcookies.R;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +27,13 @@ import com.example.milkandcookies.R;
  */
 public class PreferencesFragment extends DialogFragment {
 
+
+    private RadioGroup rgDietary;
+    private Button btnConfirm;
+
+    public interface PreferencesDialogListener {
+        void onFinishPreferenceSelection(String preference);
+    }
 
     public PreferencesFragment() {
         // Required empty public constructor
@@ -41,5 +56,26 @@ public class PreferencesFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_preferences, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rgDietary = view.findViewById(R.id.rgDietary);
+        btnConfirm = view.findViewById(R.id.btnConfirm);
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RadioButton selection = view.findViewById(rgDietary.getCheckedRadioButtonId());
+                goSearchActivity(selection.getText().toString());
+            }
+        });
+    }
+
+    private void goSearchActivity(String selected) {
+        PreferencesDialogListener listener = (PreferencesDialogListener) getActivity();
+        listener.onFinishPreferenceSelection(selected);
+        dismiss();
     }
 }
