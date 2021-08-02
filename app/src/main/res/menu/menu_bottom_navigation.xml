@@ -14,12 +14,6 @@
         app:showAsAction="ifRoom"
         android:title="New"
         />
-    <item
-        android:id="@+id/profile"
-        android:enabled="true"
-        android:icon="@drawable/profile"
-        android:title="Profile"
-        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/search"
@@ -27,6 +21,14 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/profile"
+        android:title="Profile"
+        app:showAsAction="ifRoom" />
+
 
     <item
         android:id="@+id/scan"

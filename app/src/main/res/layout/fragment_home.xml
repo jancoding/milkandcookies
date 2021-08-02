@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Your Recipes"
+        android:textSize="30sp"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
@@ -12,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tvTitle"
         android:paddingBottom="50dp"
-        android:layout_alignParentTop="true" />
+         />
 </RelativeLayout>

@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // login persistence between app uses
         if (ParseUser.getCurrentUser() != null) {
+            Log.d(TAG, "login persistence in place");
             goFeedActivity();
         }
 
@@ -118,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         googleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "launching sign in intent");
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -167,6 +169,8 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            Log.d(TAG, "got sign in result");
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
