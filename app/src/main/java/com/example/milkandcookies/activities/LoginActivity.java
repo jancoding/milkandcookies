@@ -91,14 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         googleSignIn = findViewById(R.id.sign_in_button);
 
-        // listener for scan
-        btnScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goScanActivity();
-            }
-        });
-
         // listener for signup
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,10 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goScanActivity() {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-    }
 
 
     // goes to sign up activity

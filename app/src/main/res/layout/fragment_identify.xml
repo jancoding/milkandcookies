@@ -15,6 +15,16 @@
         android:background="@color/salmon"
         />
 
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnPicture"
+        android:text="Scan"
+        android:background="@color/salmon"
+        />
+
     <ImageView
         android:id="@+id/ivPicture"
         android:layout_width="300dp"

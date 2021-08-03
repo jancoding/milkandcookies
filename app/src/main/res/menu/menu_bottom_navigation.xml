@@ -34,6 +34,6 @@
         android:id="@+id/scan"
         android:enabled="true"
         android:icon="@drawable/scan"
-        android:title="Search"
+        android:title="Analyze"
         app:showAsAction="ifRoom" />
 </menu>

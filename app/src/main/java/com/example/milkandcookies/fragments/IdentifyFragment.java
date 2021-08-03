@@ -28,6 +28,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.milkandcookies.R;
+import com.example.milkandcookies.activities.ScanActivity;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,11 +58,11 @@ public class IdentifyFragment extends Fragment {
 
 
     private Button btnPicture;
+    private Button btnScan;
     private ImageView ivPicture;
     private TextView tvIdentification;
     private TextView tvConfidence;
     private File photoFile;
-    private File binaryPhotoFile;
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     public final static int PICK_PHOTO_CODE = 1046;
@@ -94,6 +95,7 @@ public class IdentifyFragment extends Fragment {
         ivPicture = view.findViewById(R.id.ivPicture);
         tvIdentification = view.findViewById(R.id.tvIdentification);
         tvConfidence = view.findViewById(R.id.tvConfidence);
+        btnScan = view.findViewById(R.id.btnScan);
 
 
         btnPicture.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +103,14 @@ public class IdentifyFragment extends Fragment {
             public void onClick(View v) {
                 Log.i(TAG, "Clicked take picture button");
                 launchCamera();
+            }
+        });
+
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intent);
             }
         });
 
