@@ -193,7 +193,7 @@ public class IdentifyFragment extends Fragment {
                 try {
                     tvIdentification.setText(jsonObject.getString("category"));
                     double probability = jsonObject.getDouble("probability") * 100;
-                    tvConfidence.setText(probability + "%");
+                    tvConfidence.setText(getConfidenceType(probability));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -207,5 +207,15 @@ public class IdentifyFragment extends Fragment {
             }
         });
 
+    }
+
+    private String getConfidenceType(double probability) {
+        if (probability > 80) {
+            return "Very Confident";
+        } else if (probability > 50) {
+            return "Kind of Confident";
+        } else {
+            return "Not Confident";
+        }
     }
 }
