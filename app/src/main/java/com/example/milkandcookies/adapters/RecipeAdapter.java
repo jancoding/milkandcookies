@@ -3,10 +3,12 @@ package com.example.milkandcookies.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.example.milkandcookies.activities.ReplaceActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -67,11 +70,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         TextView tvRecipe;
         ImageView ivHeart;
+        Button btnSend;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRecipe = itemView.findViewById(R.id.tvTitle);
             ivHeart = itemView.findViewById(R.id.ivHeart);
+            btnSend = itemView.findViewById(R.id.btnSend);
             ivHeart.setColorFilter(ContextCompat.getColor(context, R.color.medium_red), android.graphics.PorterDuff.Mode.SRC_IN);
 
 
@@ -93,7 +98,60 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     favoriteInDatabase(recipes.get(getAdapterPosition()), isFavorited);
                 }
             });
+
+            btnSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // handle sending an email to user
+                    Recipe recipe = recipes.get(getAdapterPosition());
+                    getIngredients(recipe);
+                }
+            });
         }
+
+        private String getIngredients(Recipe recipe) {
+            ParseQuery<Ingredient> query = ParseQuery.getQuery(Ingredient.class);
+            query.whereEqualTo("recipe", recipe);
+            query.addDescendingOrder("createdAt");
+            query.findInBackground(new FindCallback<Ingredient>() {
+                public void done(List<Ingredient> itemList, ParseException e) {
+                    if (e == null) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO);
+                        intent.setData(Uri.parse("mailto:"));
+                        intent.putExtra(Intent.EXTRA_EMAIL, ParseUser.getCurrentUser().getEmail().toString());
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Your recipe from milk and cookies: " + recipe.getTitle().toString());
+                        Log.d("DEBUG", getFormattedIngredients(itemList)+ " \n\n\n" + getFormattedInstructions(recipe.getInstructions()));
+                        intent.putExtra(Intent.EXTRA_TEXT, getFormattedIngredients(itemList)+ " \n\n\n" + getFormattedInstructions(recipe.getInstructions()));
+                        context.startActivity(intent);
+                    } else {
+                        Log.d("item", "Error: " + e.getMessage());
+                    }
+                }
+            });
+            return null;
+        }
+
+        private String getFormattedIngredients(List<Ingredient> itemList) {
+            StringBuilder formattedIngredients = new StringBuilder("");
+            for (Ingredient ingredient: itemList) {
+                formattedIngredients.append(ingredient.get("display_modified")).append("\n");
+            }
+            return formattedIngredients.toString();
+        }
+
+        // TODO: change to StringBuilder
+        private String getFormattedInstructions(JSONArray instructions) {
+            String text = "";
+            for (int i = 0; i < instructions.length(); i++) {
+                try {
+                    text = text + (i+1) + ". " + instructions.getString(i) + "\n\n";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return text;
+        }
+
 
         private void favoriteInDatabase(Recipe recipe, boolean isFavorited) {
             recipe.put("favorite", !isFavorited);
