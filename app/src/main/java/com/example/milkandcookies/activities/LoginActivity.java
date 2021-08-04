@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private static final String TAG = "LoginActivity";
-    public GoogleSignInClient mGoogleSignInClient;
+    public static GoogleSignInClient mGoogleSignInClient;
     private SignInButton googleSignIn;
     private static final int RC_SIGN_IN = 200;
 

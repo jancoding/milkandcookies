@@ -96,6 +96,7 @@ public class FeedActivity extends AppCompatActivity {
     // logs a user out of its account and switches to LoginActivity
     private void logout() {
         ParseUser.logOut();
+        LoginActivity.mGoogleSignInClient.signOut();
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
