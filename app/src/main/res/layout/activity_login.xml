@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlLogin"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_list"
     tools:context=".activities.LoginActivity">
 
     <TextView
@@ -45,11 +47,19 @@
         android:background="@color/salmon"
         android:text="Login" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_below="@+id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <View
         android:id="@+id/vLine"
         android:layout_width="180dp"
         android:layout_height="1dp"
-        android:layout_below="@+id/btnLogin"
+        android:layout_below="@+id/sign_in_button"
         android:layout_marginTop="20dp"
         android:background="@android:color/darker_gray"/>
 
@@ -57,7 +67,7 @@
         android:id="@+id/tvOR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnLogin"
+        android:layout_below="@+id/sign_in_button"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/vLine"
@@ -69,25 +79,18 @@
         android:id="@+id/vLineTwo"
         android:layout_width="180dp"
         android:layout_height="1dp"
-        android:layout_below="@+id/btnLogin"
+        android:layout_below="@+id/sign_in_button"
         android:layout_toRightOf="@+id/tvOR"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:background="@android:color/darker_gray"/>
 
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_below="@+id/tvOR"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sign_in_button"
+        android:layout_below="@id/tvOR"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@color/salmon"

@@ -4,11 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 //
 //import com.android.volley.AuthFailureError;
@@ -90,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         googleSignIn = findViewById(R.id.sign_in_button);
+        RelativeLayout rlLogin = findViewById(R.id.rlLogin);
+
+        // do gradient animation
+        AnimationDrawable animationDrawable = (AnimationDrawable) rlLogin.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
 
         // listener for signup
         btnSignup.setOnClickListener(new View.OnClickListener() {
