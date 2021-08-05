@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
@@ -53,6 +54,8 @@ public class ReplaceActivity extends AppCompatActivity {
     private Recipe recipe;
     private JSONArray ingredients = new JSONArray();
     private Button btnSelect;
+    private TextView tvNone;
+    private TextView tvReplacementTitle;
 
 
     @Override
@@ -64,6 +67,8 @@ public class ReplaceActivity extends AppCompatActivity {
                 "ingredient");
         btnSelect = findViewById(R.id.btnSelect);
         recipe = (Recipe) ingredient.getParseObject("recipe");
+        tvNone = findViewById(R.id.tvNone);
+        tvReplacementTitle = findViewById(R.id.tvReplacementTitle);
         getReplacements(ingredient);
 
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +93,7 @@ public class ReplaceActivity extends AppCompatActivity {
 
     // retrieves replacements from spoonacular API
     public void getReplacements(Ingredient ingredient) {
+        // TODO: check database for ingredient replacements
         AsyncHttpClient client = new AsyncHttpClient();
         StringBuilder recipeUrl = new StringBuilder(BASE_URL);
         recipeUrl.append(getString(R.string.spoonacular_key));
@@ -110,6 +116,9 @@ public class ReplaceActivity extends AppCompatActivity {
             JSONArray jsonArray = jsonObject.getJSONArray("substitutes");
             addRadioButtons(jsonArray);
         } catch (JSONException e) {
+            tvNone.setVisibility(View.VISIBLE);
+            btnSelect.setVisibility(View.INVISIBLE);
+            tvReplacementTitle.setVisibility(View.INVISIBLE);
             e.printStackTrace();
         }
     }

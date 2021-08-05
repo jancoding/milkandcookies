@@ -103,7 +103,7 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(true);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
+        searchView.setQueryHint("Search for New Recipes");
         // Expand the search view and request focus
         searchItem.expandActionView();
         searchView.requestFocus();
@@ -143,6 +143,7 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
                 JSONObject response = json.jsonObject;
                 addToDatabase(response, query);
                 try {
+                    recipesToDisplay.clear();
                     recipesToDisplay.addAll(createRecipeSearchFromJSON(response));
                     rAdapter.notifyDataSetChanged();
                     rvSearchRecipes.scheduleLayoutAnimation();

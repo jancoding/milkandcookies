@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
         JSONArray allergens = ParseUser.getCurrentUser().getJSONArray("allergens");
         StringBuilder allergenBuilder = new StringBuilder("");
         for (int i = 0; i < allergens.length() - 1; i++) {
-            allergenBuilder.append(allergens.getString(i)).append(",");
+            allergenBuilder.append(allergens.getString(i)).append(", ");
         }
         allergenBuilder.append(allergens.getString(allergens.length() - 1));
         tvAllergens.setText(allergenBuilder.toString());

@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".activities.ScanActivity">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/salmon"
+        android:text="Point Camera at Barcode"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+
     <SurfaceView
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
@@ -22,12 +34,13 @@
         android:layout_height="50dp"
         android:layout_below="@+id/surface_view"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintTop_toBottomOf="@id/surface_view"
         android:layout_marginTop="50dp"
-        android:text="Barcode Text"
+        android:layout_marginRight="30dp"
+        android:padding="5dp"
+        android:text="barcode: "
+        android:textColor="@color/salmon"
         android:textSize="25sp"
-        android:padding="5dp"/>
+        app:layout_constraintTop_toBottomOf="@id/surface_view" />
 
     <Button
         android:id="@+id/btnConfirm"

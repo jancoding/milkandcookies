@@ -155,6 +155,7 @@ public class RecipeFragment extends Fragment {
     }
 
     private void createModified(View view) {
+        ingredientAdapter.notifyDataSetChanged();
         switchUnits.setVisibility(View.GONE);
     }
 }

@@ -9,7 +9,8 @@
         android:id="@+id/sliding_tabs_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@android:color/white"
+        app:tabTextColor="@android:color/black"
+        android:background="@color/salmon"
         app:tabMode="fixed" />
 
     <androidx.viewpager.widget.ViewPager

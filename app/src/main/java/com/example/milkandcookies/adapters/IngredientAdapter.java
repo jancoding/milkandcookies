@@ -2,6 +2,7 @@ package com.example.milkandcookies.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,9 @@ import org.json.JSONException;
 
 import java.io.Serializable;
 import java.util.List;
+
+import static com.example.milkandcookies.R.color.androidx_core_ripple_material_light;
+import static com.example.milkandcookies.R.color.brown;
 
 // adapter for recycler view displaying ingredients in detail activity
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
@@ -66,17 +70,20 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvIngredient;
+        Resources res;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvIngredient = itemView.findViewById(android.R.id.text1);
             itemView.setOnClickListener(this);
+            res = itemView.getContext().getResources();
         }
 
         // Update the view inside of the holder with this data
         public void bind(Ingredient item) {
             String text = original ? item.getString("display_original") : item.getString("display_modified");
             tvIngredient.setText(text);
+            Log.d("DEBUG", text);
             checkAllergen();
         }
 
@@ -97,7 +104,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
                         tvIngredient.setTextColor(Color.rgb(255,0,0));
                         return;
                     } else {
-                        tvIngredient.setTextColor(Color.rgb(255,255,255));
+                        tvIngredient.setTextColor(Color.rgb(0,0,0));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

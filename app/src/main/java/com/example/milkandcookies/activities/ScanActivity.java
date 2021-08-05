@@ -111,7 +111,7 @@ public class ScanActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             barcodeData = barcodes.valueAt(0).displayValue;
-                            barcodeText.setText(barcodeData);
+                            barcodeText.setText(barcodeText.getText().toString() + barcodeData);
                         }
                     });
                 }

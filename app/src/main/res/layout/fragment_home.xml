@@ -10,9 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Your Recipes"
+        android:layout_marginTop="7dp"
+        android:text="YOUR RECIPES"
+        android:textColor="@color/salmon"
         android:textSize="30sp"
-        />
+        android:textStyle="bold" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/tvTitle"
         android:paddingBottom="50dp"
          />

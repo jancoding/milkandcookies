@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,12 +34,17 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setBackgroundColor(Color.WHITE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("milk & cookies");
+
+
 
         // on first load, loads the home fragment (feed of recipes)
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flFragment, new HomeFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flFragment, new SearchFragment()).commit();
+        bottomNavigationView.setSelectedItemId(R.id.search);
 
         // loads the correct fragment based on bottom navigation view selected
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

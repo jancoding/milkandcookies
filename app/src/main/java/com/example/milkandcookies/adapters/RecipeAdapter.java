@@ -188,6 +188,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         // Update the view inside of the holder with this data
         public void bind(Recipe item) {
             tvRecipe.setText(item.getTitle());
+            setHeart();
+        }
+
+        private void setHeart() {
+            boolean isFavorited = recipes.get(getAdapterPosition()).getBoolean("favorite");
+            int imageID = isFavorited ? R.drawable.ufi_heart_active : R.drawable.ufi_heart;
+            ivHeart.setImageResource(imageID);
         }
 
         // transitions to detail view, passes recipe, and performs transition

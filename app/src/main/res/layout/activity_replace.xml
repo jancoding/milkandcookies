@@ -10,9 +10,25 @@
         android:id="@+id/tvReplacementTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose a replacement:"
+        android:text="choose a replacement:"
+        android:textColor="@color/light_salmon"
         android:textSize="24sp"
+        android:layout_marginLeft="10dp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvNone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="no replacements found"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/light_salmon"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold" />
+
     <RadioGroup
         android:id="@+id/rgOptions"
         android:layout_below="@+id/tvReplacementTitle"
