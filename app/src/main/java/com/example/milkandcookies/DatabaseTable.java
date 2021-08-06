@@ -24,6 +24,12 @@ public class DatabaseTable {
     public static final String COL_TITLE = "TITLE";
     public static final String COL_IMAGEURL = "IMAGEURL";
     public static final String COL_SOURCEURL = "SOURCEURL";
+    public static final String COL_GLUTEN = "GLUTEN_FREE";
+    public static final String COL_DAIRY = "DAIRY_FREE";
+    public static final String COL_VEGETARIAN = "VEGETARIAN";
+    public static final String COL_VEGAN = "VEGAN";
+
+
 
 
     private static final String DATABASE_NAME = "RECIPE";
@@ -48,6 +54,10 @@ public class DatabaseTable {
                         " USING fts3 (" +
                         COL_TITLE + ", " +
                         COL_SOURCEURL + ", " +
+                        COL_VEGAN + ", " +
+                        COL_VEGETARIAN + ", " +
+                        COL_GLUTEN + ", " +
+                        COL_DAIRY + ", " +
                         COL_IMAGEURL + ")";
 
         DatabaseOpenHelper(Context context) {
@@ -86,16 +96,21 @@ public class DatabaseTable {
             JSONArray recipesArray = jsonObject.getJSONArray("results");
             for (int i = 0; i < recipesArray.length(); i++) {
                 JSONObject recipe = recipesArray.getJSONObject(i);
-                addRecipe(recipe.getString("title"), recipe.getString("image"), recipe.getString("sourceUrl"));
+                addRecipe(recipe.getString("title"), recipe.getString("image"), recipe.getString("sourceUrl"), recipe.getString("vegetarian"), recipe.getString("vegan"), recipe.getString("glutenFree"), recipe.getString("dairyFree"));
             }
         }
 
         // adds a new recipe row to the database
-        public long addRecipe(String title, String imageURL, String sourceURL) {
+        public long addRecipe(String title, String imageURL, String sourceURL, String vegetarian, String vegan, String glutenFree, String dairyFree) {
             ContentValues initialValues = new ContentValues();
+            Log.d("vegan is ", vegan);
             initialValues.put(COL_TITLE, title);
             initialValues.put(COL_IMAGEURL, imageURL);
             initialValues.put(COL_SOURCEURL, sourceURL);
+            initialValues.put(COL_VEGETARIAN, vegetarian);
+            initialValues.put(COL_VEGAN, vegan);
+            initialValues.put(COL_GLUTEN, glutenFree);
+            initialValues.put(COL_DAIRY, dairyFree);
             return mDatabase.insert(FTS_VIRTUAL_TABLE, null, initialValues);
         }
     }

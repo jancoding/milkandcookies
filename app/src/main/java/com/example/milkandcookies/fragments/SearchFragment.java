@@ -61,7 +61,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment implements  PreferencesFragment.PreferencesDialogListener {
+public class SearchFragment extends Fragment {
 
     private DatabaseTable db;
     private final String BASE_URL = "https://api.spoonacular.com/recipes/complexSearch?apiKey=";
@@ -75,6 +75,7 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
     private Button btnAdvanced;
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     private File photoFile;
+    public static String selection = null;
 
 
     public SearchFragment() {
@@ -260,6 +261,7 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 JSONObject response = json.jsonObject;
+                Log.d("query response", response.toString());
                 addToDatabase(response, query);
                 try {
                     recipesToDisplay.clear();
@@ -307,8 +309,15 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
             String title = c.getString(c.getColumnIndex("TITLE"));
             String sourceUrl = c.getString(c.getColumnIndex("SOURCEURL"));
             String imageUrl = c.getString(c.getColumnIndex("IMAGEURL"));
-            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title);
-            toReturn.add(recipeSearch);
+            Boolean vegetarian = Boolean.valueOf(c.getString(c.getColumnIndex("VEGETARIAN")));
+            Boolean vegan = Boolean.valueOf(c.getString(c.getColumnIndex("VEGAN")));
+            Boolean dairy_free = Boolean.valueOf(c.getString(c.getColumnIndex("DAIRY_FREE")));
+            Boolean gluten_free = Boolean.valueOf(c.getString(c.getColumnIndex("GLUTEN_FREE")));
+            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title, vegan, vegetarian, gluten_free, dairy_free);
+            if (canAdd(recipeSearch)) {
+                toReturn.add(recipeSearch);
+            }
+
         }
         return toReturn;
     }
@@ -321,15 +330,35 @@ public class SearchFragment extends Fragment implements  PreferencesFragment.Pre
             String title = results.getJSONObject(i).getString("title");
             String sourceUrl = results.getJSONObject(i).getString("sourceUrl");
             String imageUrl = results.getJSONObject(i).getString("image");
-            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title);
-            toReturn.add(recipeSearch);
+            Boolean vegetarian = results.getJSONObject(i).getBoolean("vegetarian");
+            Boolean vegan = results.getJSONObject(i).getBoolean("vegan");
+            Boolean glutenFree = results.getJSONObject(i).getBoolean("glutenFree");
+            Boolean dairyFree = results.getJSONObject(i).getBoolean("dairyFree");
+            RecipeSearch recipeSearch = new RecipeSearch(imageUrl, sourceUrl, title, vegan, vegetarian, glutenFree, dairyFree);
+
+            if (canAdd(recipeSearch)) {
+                toReturn.add(recipeSearch);
+            }
+
         }
         return toReturn;
     }
 
-
-    @Override
-    public void onFinishPreferenceSelection(String preference) {
-        // take selection when performing queriess
+    private boolean canAdd(RecipeSearch recipeSearch) {
+        if (selection == null) {
+            return true;
+        } else if (selection.equals("Vegan") && recipeSearch.vegan) {
+            return true;
+        } else if (selection.equals("Vegetarian") && recipeSearch.vegetarian) {
+            return true;
+        } else if (selection.equals("Dairy Free") && recipeSearch.dairy_free) {
+            return true;
+        } else if (selection.equals("Gluten Free") && recipeSearch.gluten_free) {
+            return true;
+        }
+        return false;
     }
+
+
+
 }

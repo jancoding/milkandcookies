@@ -31,10 +31,6 @@ public class PreferencesFragment extends DialogFragment {
     private RadioGroup rgDietary;
     private Button btnConfirm;
 
-    public interface PreferencesDialogListener {
-        void onFinishPreferenceSelection(String preference);
-    }
-
     public PreferencesFragment() {
         // Required empty public constructor
     }
@@ -74,8 +70,7 @@ public class PreferencesFragment extends DialogFragment {
     }
 
     private void goSearchActivity(String selected) {
-        PreferencesDialogListener listener = (PreferencesDialogListener) getActivity();
-        listener.onFinishPreferenceSelection(selected);
+        SearchFragment.selection = selected;
         dismiss();
     }
 }
