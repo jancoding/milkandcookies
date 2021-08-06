@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -44,6 +45,10 @@ public class RecipeFragment extends Fragment {
     private List<Ingredient> ingredients;
     private ParseObject recipe;
     private Switch switchUnits;
+    private ImageView ivDairy;
+    private ImageView ivGluten;
+    private ImageView ivVegan;
+    private ImageView ivVegetarian;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -86,12 +91,19 @@ public class RecipeFragment extends Fragment {
         switchUnits = view.findViewById(R.id.switchUnits);
         ingredientAdapter = new IngredientAdapter(ingredients, this.page == 1);
         tvInstructions = view.findViewById(R.id.tvInstructions);
+        ivDairy = view.findViewById(R.id.ivDairy);
+        ivGluten = view.findViewById(R.id.ivGluten);
+        ivVegan = view.findViewById(R.id.ivVegan);
+        ivVegetarian = view.findViewById(R.id.ivVegetarian);
+
         tvTitle = view.findViewById(R.id.tvTitle);
         rvIngredients.setAdapter(ingredientAdapter);
         rvIngredients.setLayoutManager(new LinearLayoutManager(getActivity()));
         tvInstructions.setText(decomposeInstructions(((Recipe) recipe).getInstructions()));
         tvTitle.setText(((Recipe) recipe).getTitle());
         tvInstructions.setMovementMethod(new ScrollingMovementMethod());
+
+        setTags();
 
         // listener for switch to transition between metric and us measurements
         switchUnits.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -109,6 +121,21 @@ public class RecipeFragment extends Fragment {
 
         // determines whether the view should be original or modified
         setUpPage(view);
+    }
+
+    private void setTags() {
+        if (recipe.getBoolean("vegan")) {
+            ivVegan.setVisibility(View.VISIBLE);
+        }
+        if (recipe.getBoolean("vegetarian")) {
+            ivVegetarian.setVisibility(View.VISIBLE);
+        }
+        if (recipe.getBoolean("gluten_free")) {
+            ivGluten.setVisibility(View.VISIBLE);
+        }
+        if (recipe.getBoolean("dairy_free")) {
+            ivDairy.setVisibility(View.VISIBLE);
+        }
     }
 
 

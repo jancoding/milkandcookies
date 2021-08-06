@@ -345,6 +345,8 @@ public class SearchFragment extends Fragment {
     }
 
     private boolean canAdd(RecipeSearch recipeSearch) {
+
+        Log.d("DEBUG", "selection is " + selection);
         if (selection == null) {
             return true;
         } else if (selection.equals("Vegan") && recipeSearch.vegan) {
