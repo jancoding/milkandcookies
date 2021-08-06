@@ -173,6 +173,7 @@ public class IdentifyFragment extends Fragment {
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
                 ivPicture.setImageBitmap(takenImage);
+                ivPicture.setRotation(90);
                 getFoodIdentification(takenImage);
             }
         }

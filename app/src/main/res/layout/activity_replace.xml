@@ -6,13 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".activities.ReplaceActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:background="?attr/colorPrimary">
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/tvReplacementTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="choose a replacement:"
+        android:text="CHOOSE A REPLACEMENT:"
+        android:layout_centerHorizontal="true"
         android:textColor="@color/light_salmon"
         android:textSize="24sp"
+        android:layout_above="@+id/rgOptions"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:textStyle="bold" />
 
@@ -31,18 +43,18 @@
 
     <RadioGroup
         android:id="@+id/rgOptions"
-        android:layout_below="@+id/tvReplacementTitle"
+        android:layout_above="@+id/btnSelect"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical" />
 
     <Button
         android:id="@+id/btnSelect"
         android:layout_width="wrap_content"
-        android:layout_below="@id/rgOptions"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:background="@color/salmon"
         android:text="Select"

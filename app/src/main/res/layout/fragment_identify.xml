@@ -30,7 +30,8 @@
         android:id="@+id/ivPicture"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_below="@+id/btnPicture"
+        android:layout_below="@+id/btnScan"
+        android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
         />
 

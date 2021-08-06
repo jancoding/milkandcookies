@@ -1,6 +1,9 @@
 package com.example.milkandcookies.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +76,12 @@ public class ReplaceActivity extends AppCompatActivity {
         tvNone = findViewById(R.id.tvNone);
         tvReplacementTitle = findViewById(R.id.tvReplacementTitle);
         getReplacements(ingredient);
+
+        // set up toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("milk & cookies");
+
 
         // loading personal replacement database
         try {
@@ -151,6 +160,9 @@ public class ReplaceActivity extends AppCompatActivity {
         for (int i = 0; i < substitutes.length(); i++) {
             RadioButton rdbtn = new RadioButton(this);
             rdbtn.setId(View.generateViewId());
+            rdbtn.setButtonTintList(
+                    ContextCompat.getColorStateList(this,
+                            R.color.salmon));
             try {
                 rdbtn.setText(substitutes.getString(i));
             } catch (JSONException e) {
