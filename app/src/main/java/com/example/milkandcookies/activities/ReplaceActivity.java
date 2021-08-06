@@ -2,6 +2,7 @@ package com.example.milkandcookies.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.INotificationSideChannel;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,7 @@ public class ReplaceActivity extends AppCompatActivity {
     private Button btnSelect;
     private TextView tvNone;
     private TextView tvReplacementTitle;
+    private JSONObject database;
 
 
     @Override
@@ -70,6 +73,14 @@ public class ReplaceActivity extends AppCompatActivity {
         tvNone = findViewById(R.id.tvNone);
         tvReplacementTitle = findViewById(R.id.tvReplacementTitle);
         getReplacements(ingredient);
+
+        // loading personal replacement database
+        try {
+            database = new JSONObject(loadJSONFromAsset(this));
+        } catch (JSONException e) {
+            Log.d("DEBUG load database", "could not load database");
+            e.printStackTrace();
+        }
 
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +112,7 @@ public class ReplaceActivity extends AppCompatActivity {
         client.get(recipeUrl.toString(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
-                getReplacementsfromJSON(json);
+                getReplacementsfromJSON(json, ingredient);
             }
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
@@ -110,12 +121,23 @@ public class ReplaceActivity extends AppCompatActivity {
     }
 
     // parses JSON response from spoonacular api and creates buttons for every replacement option
-    private void getReplacementsfromJSON(JsonHttpResponseHandler.JSON json) {
+    private void getReplacementsfromJSON(JsonHttpResponseHandler.JSON json, Ingredient ingredient) {
         JSONObject jsonObject = json.jsonObject;
         try {
             JSONArray jsonArray = jsonObject.getJSONArray("substitutes");
             addRadioButtons(jsonArray);
         } catch (JSONException e) {
+            checkOwnDatabase(ingredient);
+            e.printStackTrace();
+        }
+    }
+
+    private void checkOwnDatabase(Ingredient ingredient) {
+        String ingredientName = ingredient.getName();
+        try {
+            addRadioButtons(database.getJSONObject(ingredientName).getJSONArray("replacements"));
+        } catch (JSONException e) {
+            Log.d("DEBUG load database", "could not load replacements from database");
             tvNone.setVisibility(View.VISIBLE);
             btnSelect.setVisibility(View.INVISIBLE);
             tvReplacementTitle.setVisibility(View.INVISIBLE);
@@ -136,5 +158,24 @@ public class ReplaceActivity extends AppCompatActivity {
             }
             rgOptions.addView(rdbtn);
         }
+    }
+
+
+    public String loadJSONFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("database.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
     }
 }
