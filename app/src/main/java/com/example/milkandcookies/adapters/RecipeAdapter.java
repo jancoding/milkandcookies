@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.milkandcookies.Ingredient;
+import com.example.milkandcookies.OnSwipeTouchListener;
 import com.example.milkandcookies.R;
 import com.example.milkandcookies.Recipe;
 import com.example.milkandcookies.activities.DetailActivity;
@@ -78,6 +79,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             ivHeart = itemView.findViewById(R.id.ivHeart);
             btnSend = itemView.findViewById(R.id.btnSend);
             ivHeart.setColorFilter(ContextCompat.getColor(context, R.color.medium_red), android.graphics.PorterDuff.Mode.SRC_IN);
+
+            itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
+                public void onSwipeLeft() {
+                    deleteRecipe();
+                }
+            });
 
 
             itemView.setOnClickListener(this);
